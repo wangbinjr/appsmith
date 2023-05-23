@@ -268,7 +268,7 @@ export const getAppPositioningType = (state: AppState) => {
 };
 
 export const isAutoLayoutEnabled = (state: AppState): boolean => {
-  return state.ui.users.featureFlag.data.AUTO_LAYOUT === true;
+  return state.ui.users.featureFlag.data.auto_layout === true;
 };
 
 export const getCurrentAppPositioningType = createSelector(

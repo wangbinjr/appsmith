@@ -36,6 +36,7 @@ import {
   invitedUserSignupSuccess,
   fetchFeatureFlagsSuccess,
   fetchFeatureFlagsError,
+  joinBetaChannelError,
 } from "actions/userActions";
 import AnalyticsUtil from "utils/AnalyticsUtil";
 import { INVITE_USERS_TO_WORKSPACE_FORM } from "@appsmith/constants/forms";
@@ -76,6 +77,9 @@ import { isAirgapped } from "@appsmith/utils/airgapHelpers";
 import { USER_PROFILE_PICTURE_UPLOAD_FAILED } from "ce/constants/messages";
 import { UPDATE_USER_DETAILS_FAILED } from "ce/constants/messages";
 import { createMessage } from "design-system-old/build/constants/messages";
+import FeatureFlagApi from "../../api/FeatureFlagApi";
+import type { AxiosResponse } from "axios";
+import { defaultFlags } from "entities/FeatureFlags";
 
 export function* createUserSaga(
   action: ReduxActionWithPromise<CreateUserRequest>,
@@ -507,16 +511,38 @@ export function* updatePhoto(
 
 export function* fetchFeatureFlags() {
   try {
-    const response: ApiResponse<FeatureFlags> = yield call(
-      UserApi.fetchFeatureFlags,
-    );
-    const isValidResponse: boolean = yield validateResponse(response);
-    if (isValidResponse) {
-      yield put(fetchFeatureFlagsSuccess(response.data));
+    let currentUser: User | undefined = yield select(getCurrentUser);
+    if (!currentUser) {
+      yield take(ReduxActionTypes.FETCH_USER_DETAILS_SUCCESS);
+      currentUser = yield select(getCurrentUser);
     }
+    if (!currentUser) return;
+    const response: ApiResponse<{
+      flags: Array<{ feature: { name: keyof FeatureFlags }; enabled: boolean }>;
+    }> = yield call(FeatureFlagApi.getFeatureFlags, currentUser.email);
+
+    const data: FeatureFlags = defaultFlags;
+    response.data.flags.forEach((flag) => {
+      const name = flag.feature.name;
+      data[name] = flag.enabled;
+    });
+
+    yield put(fetchFeatureFlagsSuccess(data));
   } catch (error) {
     log.error(error);
     yield put(fetchFeatureFlagsError(error));
+  }
+}
+
+export function* joinBetaChannelSaga() {
+  try {
+    const response: AxiosResponse = yield call(FeatureFlagApi.joinBetaChannel);
+    if (response.status === 200) {
+      window.location.reload();
+    }
+  } catch (error) {
+    log.error(error);
+    yield put(joinBetaChannelError(error));
   }
 }
 

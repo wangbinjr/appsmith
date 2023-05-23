@@ -16,6 +16,7 @@ import {
   leaveWorkspaceSaga,
   fetchFeatureFlags,
   updateFirstTimeUserOnboardingSage,
+  joinBetaChannelSaga,
 } from "ce/sagas/userSagas";
 import { ReduxActionTypes } from "@appsmith/constants/ReduxActionConstants";
 import { takeLatest, all } from "redux-saga/effects";
@@ -53,5 +54,6 @@ export default function* userSagas() {
       ReduxActionTypes.FETCH_USER_DETAILS_SUCCESS,
       updateFirstTimeUserOnboardingSage,
     ),
+    takeLatest(ReduxActionTypes.JOIN_BETA_CHANNEL_INIT, joinBetaChannelSaga),
   ]);
 }

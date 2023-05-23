@@ -1,17 +1,25 @@
 type FeatureFlags = {
   APP_TEMPLATE?: boolean;
   JS_EDITOR?: boolean;
-  MULTIPLAYER?: boolean;
-  SNIPPET?: boolean;
   TEMPLATES_PHASE_2?: boolean;
-  RBAC?: boolean;
-  CONTEXT_SWITCHING?: boolean;
-  USAGE_AND_BILLING?: boolean;
-  DATASOURCE_ENVIRONMENTS?: boolean;
-  MULTIPLE_PANES?: boolean;
-  AUTO_LAYOUT?: boolean;
-  ONE_CLICK_BINDING?: boolean;
+  multiple_panes?: boolean;
+  auto_layout?: boolean;
   ask_ai?: boolean;
+  color_header?: boolean;
+  color_footer?: boolean;
+  beta_user?: boolean;
+};
+
+export const defaultFlags: FeatureFlags = {
+  APP_TEMPLATE: true,
+  JS_EDITOR: true,
+  TEMPLATES_PHASE_2: true,
+  multiple_panes: false,
+  auto_layout: true,
+  ask_ai: false,
+  color_header: false,
+  color_footer: false,
+  beta_user: false,
 };
 
 export default FeatureFlags;

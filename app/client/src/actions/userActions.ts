@@ -112,3 +112,16 @@ export const fetchFeatureFlagsError = (error: any) => ({
   type: ReduxActionErrorTypes.FETCH_FEATURE_FLAGS_ERROR,
   payload: { error, show: false },
 });
+
+export const joinBetaChannelInit = () => ({
+  type: ReduxActionTypes.JOIN_BETA_CHANNEL_INIT,
+});
+
+export const joinBetaChannelSuccess = () => ({
+  type: ReduxActionTypes.JOIN_BETA_CHANNEL_SUCCESS,
+});
+
+export const joinBetaChannelError = (error: unknown) => ({
+  type: ReduxActionErrorTypes.JOIN_BETA_CHANNEL_ERROR,
+  payload: { error },
+});

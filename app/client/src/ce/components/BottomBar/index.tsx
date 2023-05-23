@@ -9,6 +9,7 @@ import PaneCountSwitcher from "pages/common/PaneCountSwitcher";
 import { useSelector } from "react-redux";
 import { isMultiPaneActive } from "selectors/multiPaneSelectors";
 import { Button } from "design-system";
+import { JoinBeta } from "./JoinBeta";
 
 const Container = styled.div`
   width: 100%;
@@ -30,10 +31,21 @@ const Wrapper = styled.div`
 
 export default function BottomBar(props: { className?: string }) {
   const isMultiPane = useSelector(isMultiPaneActive);
+  const isBackgroundColoured = useSelector(
+    (state) => state.ui.users.featureFlag.data.color_footer,
+  );
   return (
-    <Container className={props.className ?? ""}>
+    <Container
+      className={props.className ?? ""}
+      style={{
+        background: isBackgroundColoured
+          ? "var(--ads-v2-color-bg-brand-emphasis-plus)"
+          : "",
+      }}
+    >
       <QuickGitActions />
       <Wrapper>
+        <JoinBeta />
         <ManualUpgrades showTooltip>
           <Button
             className="t--upgrade"

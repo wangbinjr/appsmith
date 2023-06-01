@@ -54,7 +54,7 @@ export class LightModeTheme implements ColorModeTheme {
       // fg
       fg: this.fg.toString({ format: "hex" }),
       fgAccent: this.fgAccent.toString({ format: "hex" }),
-      fgNegative: this.fgNegative,
+      fgNegative: this.fgNegative.toString({ format: "hex" }),
       fgOnAccent: this.fgOnAccent.toString({ format: "hex" }),
       fgOnAssistive: this.fgOnAssistive.toString({ format: "hex" }),
       // bd

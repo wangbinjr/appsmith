@@ -41,16 +41,20 @@ export interface ColorModeTheme {
     bgAccentActive: string;
     bgAccentSubtleHover: string;
     bgAccentSubtleActive: string;
+    bgPositive: string;
     fg: string;
     fgAccent: string;
     fgOnAccent: string;
+    fgOnAssistive: string;
+    fgPositive: string;
     bdAccent: string;
+    bgAssistive: string;
     bdFocus: string;
     bdNeutral: string;
     bdNeutralHover: string;
     bdNegative: string;
     bdNegativeHover: string;
-    fgOnAssistive: string;
-    bgAssistive: string;
+    bdPositive: string;
+    bdPositiveHover: string;
   };
 }

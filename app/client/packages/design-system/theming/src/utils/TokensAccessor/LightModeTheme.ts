@@ -11,6 +11,7 @@ export class LightModeTheme implements ColorModeTheme {
   private readonly seedHue: number;
   private readonly seedIsAchromatic: boolean;
   private readonly seedIsCold: boolean;
+  private readonly seedIsGreen: boolean;
   private readonly seedIsVeryLight: boolean;
   private readonly seedIsYellow: boolean;
 
@@ -21,6 +22,7 @@ export class LightModeTheme implements ColorModeTheme {
       hue,
       isAchromatic,
       isCold,
+      isGreen,
       isVeryLight,
       isYellow,
       lightness,
@@ -31,6 +33,7 @@ export class LightModeTheme implements ColorModeTheme {
     this.seedHue = hue;
     this.seedIsAchromatic = isAchromatic;
     this.seedIsCold = isCold;
+    this.seedIsGreen = isGreen;
     this.seedIsVeryLight = isVeryLight;
     this.seedIsYellow = isYellow;
   }
@@ -47,12 +50,14 @@ export class LightModeTheme implements ColorModeTheme {
         format: "hex",
       }),
       bgAssistive: this.bgAssistive.toString(),
+      bgPositive: this.bgPositive.toString({ format: "hex" }),
       // fg
       fg: this.fg.toString({ format: "hex" }),
       fgAccent: this.fgAccent.toString({ format: "hex" }),
       fgOnAccent: this.fgOnAccent.toString({ format: "hex" }),
       fgNegative: this.fgNegative,
       fgOnAssistive: this.fgOnAssistive.toString({ format: "hex" }),
+      fgPositive: this.fgPositive.toString({ format: "hex" }),
       // bd
       bdAccent: this.bdAccent.toString({ format: "hex" }),
       bdNeutral: this.bdNeutral.toString({ format: "hex" }),
@@ -60,6 +65,8 @@ export class LightModeTheme implements ColorModeTheme {
       bdFocus: this.bdFocus.toString({ format: "hex" }),
       bdNegative: this.bdNegative,
       bdNegativeHover: this.bdNegativeHover,
+      bdPositive: this.bdPositive.toString({ format: "hex" }),
+      bdPositiveHover: this.bdPositiveHover.toString({ format: "hex" }),
     };
   };
 
@@ -180,6 +187,27 @@ export class LightModeTheme implements ColorModeTheme {
     return color;
   }
 
+  private get bgPositive() {
+    const color = this.bgAccent.clone();
+
+    color.oklch.h = 140;
+
+    if (this.seedIsGreen) {
+      if (this.seedColor.oklch.h < 139) {
+        color.oklch.h = 165;
+      }
+      if (this.seedColor.oklch.h >= 139) {
+        color.oklch.h = 116;
+      }
+    }
+
+    if (color.oklch.c < 0.15) {
+      color.oklch.c = 0.15;
+    }
+
+    return color;
+  }
+
   // used only for generating child colors, not used as a token
   private get bgAccentSubtle() {
     const color = this.seedColor.clone();
@@ -279,6 +307,15 @@ export class LightModeTheme implements ColorModeTheme {
     return this.bg.clone();
   }
 
+  private get fgPositive() {
+    const color = this.bgPositive.clone();
+
+    if (this.bg.contrastAPCA(color) < 60) {
+      color.oklch.l = 50;
+    }
+
+    return color;
+  }
   /*
    * Border colors
    */
@@ -356,5 +393,39 @@ export class LightModeTheme implements ColorModeTheme {
 
   private get bdNegativeHover() {
     return "#b90707";
+  }
+
+  private get bdPositive() {
+    const color = this.bdAccent.clone();
+
+    color.oklch.h = this.bgPositive.oklch.h;
+
+    if (color.oklch.c < 0.15) {
+      color.oklch.c = 0.15;
+    }
+
+    return color;
+  }
+
+  private get bdPositiveHover() {
+    const color = this.bdPositive.clone();
+
+    if (this.bdPositive.oklch.l < 0.06) {
+      color.oklch.l = color.oklch.l + 0.6;
+    }
+
+    if (this.bdPositive.oklch.l >= 0.06 && this.bdPositive.oklch.l < 0.25) {
+      color.oklch.l = color.oklch.l + 0.4;
+    }
+
+    if (this.bdPositive.oklch.l >= 0.25 && this.bdPositive.oklch.l < 0.5) {
+      color.oklch.l = color.oklch.l + 0.25;
+    }
+
+    if (this.bdPositive.oklch.l >= 0.5) {
+      color.oklch.l = color.oklch.l + 0.1;
+    }
+
+    return color;
   }
 }

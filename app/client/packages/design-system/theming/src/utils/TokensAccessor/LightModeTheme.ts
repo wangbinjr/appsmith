@@ -233,6 +233,10 @@ export class LightModeTheme implements ColorModeTheme {
       }
     }
 
+    if (color.oklch.c < 0.19) {
+      color.oklch.c = 0.19;
+    }
+
     return color;
   }
 
@@ -343,6 +347,10 @@ export class LightModeTheme implements ColorModeTheme {
     const color = this.bdAccent.clone();
 
     color.oklch.h = this.bgNegative.oklch.h;
+
+    if (color.oklch.c < 0.19) {
+      color.oklch.c = 0.19;
+    }
 
     return color;
   }

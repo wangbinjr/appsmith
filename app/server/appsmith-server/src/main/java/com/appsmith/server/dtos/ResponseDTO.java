@@ -1,13 +1,13 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.dtos;
 
 import com.appsmith.external.exceptions.ErrorDTO;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.io.Serializable;
 
 @Getter
 @Setter
@@ -48,5 +48,4 @@ public class ResponseDTO<T> implements Serializable {
 
         return error.getCode() + ": " + error.getMessage();
     }
-
 }

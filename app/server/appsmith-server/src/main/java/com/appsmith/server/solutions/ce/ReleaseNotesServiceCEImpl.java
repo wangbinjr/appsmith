@@ -1,8 +1,12 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.solutions.ce;
 
 import com.appsmith.server.configurations.ProjectProperties;
 import com.appsmith.server.dtos.ReleaseNode;
 import com.appsmith.server.helpers.ReleaseNotesUtils;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -10,11 +14,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-
 
 @RequiredArgsConstructor
 @Slf4j
@@ -78,7 +77,7 @@ public class ReleaseNotesServiceCEImpl implements ReleaseNotesServiceCE {
     @Scheduled(initialDelay = 2 * 60 * 1000 /* two minutes */, fixedRate = 2 * 60 * 60 * 1000 /* two hours */)
     public void refreshReleaseNotes() {
 
-        cacheExpiryTime = null;  // Bust the release notes cache to force fetching again.
+        cacheExpiryTime = null; // Bust the release notes cache to force fetching again.
         getReleaseNodes()
                 .map(releaseNodes -> {
                     cacheExpiryTime = Instant.now().plusSeconds(2 * 60 * 60);
@@ -95,5 +94,4 @@ public class ReleaseNotesServiceCEImpl implements ReleaseNotesServiceCE {
     public void setReleaseNodesCache(List<ReleaseNode> nodes) {
         this.releaseNodesCache = nodes;
     }
-
 }

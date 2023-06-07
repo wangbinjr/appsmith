@@ -1,6 +1,11 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.repositories;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.appsmith.server.domains.User;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,11 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Slf4j
@@ -47,9 +47,11 @@ public class UserRepositoryTest {
 
         Mono<User> findUserMono = userRepository.findByCaseInsensitiveEmail("rafiqnayan@gmail.com");
 
-        StepVerifier.create(findUserMono).assertNext(u -> {
-            assertEquals(savedUser.getEmail(), u.getEmail());
-        }).verifyComplete();
+        StepVerifier.create(findUserMono)
+                .assertNext(u -> {
+                    assertEquals(savedUser.getEmail(), u.getEmail());
+                })
+                .verifyComplete();
     }
 
     @Test
@@ -61,9 +63,11 @@ public class UserRepositoryTest {
 
         Mono<User> findUserByEmailMono = userRepository.findByCaseInsensitiveEmail("rafiqnayan@gmail.com");
 
-        StepVerifier.create(findUserByEmailMono).assertNext(u -> {
-            assertEquals(savedUser.getEmail(), u.getEmail());
-        }).verifyComplete();
+        StepVerifier.create(findUserByEmailMono)
+                .assertNext(u -> {
+                    assertEquals(savedUser.getEmail(), u.getEmail());
+                })
+                .verifyComplete();
     }
 
     @Test
@@ -80,9 +84,11 @@ public class UserRepositoryTest {
 
         Mono<User> findUserByEmailMono = userRepository.findByCaseInsensitiveEmail("rafiqnayan@gmail.com");
 
-        StepVerifier.create(findUserByEmailMono).assertNext(u -> {
-            assertEquals(savedUser2.getEmail(), u.getEmail());
-        }).verifyComplete();
+        StepVerifier.create(findUserByEmailMono)
+                .assertNext(u -> {
+                    assertEquals(savedUser2.getEmail(), u.getEmail());
+                })
+                .verifyComplete();
     }
 
     @Test

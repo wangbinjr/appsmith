@@ -1,4 +1,7 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.authentication.handlers;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.appsmith.server.domains.User;
 import com.appsmith.server.repositories.UserRepository;
@@ -12,8 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 public class CustomFormLoginServiceImplUnitTest {

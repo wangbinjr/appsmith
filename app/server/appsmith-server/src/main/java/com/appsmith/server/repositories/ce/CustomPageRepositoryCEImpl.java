@@ -1,4 +1,7 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.repositories.ce;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 import com.appsmith.server.acl.AclPermission;
 import com.appsmith.server.domains.Page;
@@ -6,23 +9,21 @@ import com.appsmith.server.domains.QLayout;
 import com.appsmith.server.domains.QPage;
 import com.appsmith.server.repositories.BaseAppsmithRepositoryImpl;
 import com.appsmith.server.repositories.CacheableRepositoryHelper;
+import java.util.List;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import org.springframework.data.mongodb.core.convert.MongoConverter;
 import org.springframework.data.mongodb.core.query.Criteria;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
+public class CustomPageRepositoryCEImpl extends BaseAppsmithRepositoryImpl<Page> implements CustomPageRepositoryCE {
 
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-
-public class CustomPageRepositoryCEImpl extends BaseAppsmithRepositoryImpl<Page>
-        implements CustomPageRepositoryCE {
-
-    public CustomPageRepositoryCEImpl(ReactiveMongoOperations mongoOperations, MongoConverter mongoConverter, CacheableRepositoryHelper cacheableRepositoryHelper) {
+    public CustomPageRepositoryCEImpl(
+            ReactiveMongoOperations mongoOperations,
+            MongoConverter mongoConverter,
+            CacheableRepositoryHelper cacheableRepositoryHelper) {
         super(mongoOperations, mongoConverter, cacheableRepositoryHelper);
     }
-
 
     @Override
     public Mono<Page> findByIdAndLayoutsId(String id, String layoutId, AclPermission aclPermission) {
@@ -43,14 +44,16 @@ public class CustomPageRepositoryCEImpl extends BaseAppsmithRepositoryImpl<Page>
 
     @Override
     public Flux<Page> findByApplicationId(String applicationId, AclPermission aclPermission) {
-        Criteria applicationIdCriteria = where(fieldName(QPage.page.applicationId)).is(applicationId);
+        Criteria applicationIdCriteria =
+                where(fieldName(QPage.page.applicationId)).is(applicationId);
         return queryAll(List.of(applicationIdCriteria), aclPermission);
     }
 
     @Override
     public Mono<Page> findByNameAndApplicationId(String name, String applicationId, AclPermission aclPermission) {
         Criteria nameCriteria = where(fieldName(QPage.page.name)).is(name);
-        Criteria applicationIdCriteria = where(fieldName(QPage.page.applicationId)).is(applicationId);
+        Criteria applicationIdCriteria =
+                where(fieldName(QPage.page.applicationId)).is(applicationId);
         return queryOne(List.of(nameCriteria, applicationIdCriteria), aclPermission);
     }
 }

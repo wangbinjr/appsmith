@@ -1,14 +1,14 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.domains;
 
 import com.appsmith.external.models.AppsmithDomain;
 import com.appsmith.external.views.Views;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.Data;
-import org.springframework.data.annotation.Transient;
-
 import java.time.Instant;
 import java.util.Map;
+import lombok.Data;
+import org.springframework.data.annotation.Transient;
 
 // This class will be used for one-to-one mapping for the DB application and the application present in the git repo.
 @Data

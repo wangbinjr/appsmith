@@ -1,9 +1,9 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.dtos;
 
+import java.time.Instant;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.Instant;
 
 @Getter
 @Setter

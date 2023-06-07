@@ -1,10 +1,10 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.external.exceptions;
-
-import lombok.Getter;
-import org.slf4j.MDC;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
+import org.slf4j.MDC;
 
 @Getter
 public abstract class BaseException extends RuntimeException {
@@ -36,5 +36,4 @@ public abstract class BaseException extends RuntimeException {
     public abstract String getDownstreamErrorCode();
 
     public abstract String getErrorType();
-
 }

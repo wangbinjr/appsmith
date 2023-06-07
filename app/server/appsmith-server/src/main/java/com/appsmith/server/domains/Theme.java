@@ -1,17 +1,17 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.domains;
 
 import com.appsmith.external.models.BaseDomain;
 import com.appsmith.external.views.Views;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.Map;
 
 @Getter
 @Setter
@@ -32,7 +32,7 @@ public class Theme extends BaseDomain {
     @JsonView(Views.Public.class)
     private String applicationId;
 
-    //Organizations migrated to workspaces, kept the field as deprecated to support the old migration
+    // Organizations migrated to workspaces, kept the field as deprecated to support the old migration
     @Deprecated
     @JsonView(Views.Public.class)
     private String organizationId;
@@ -49,9 +49,9 @@ public class Theme extends BaseDomain {
     @JsonView(Views.Public.class)
     private Map<String, Object> stylesheet;
 
-    @JsonProperty("isSystemTheme")  // manually setting property name to make sure it's compatible with Gson
+    @JsonProperty("isSystemTheme") // manually setting property name to make sure it's compatible with Gson
     @JsonView({Views.Public.class})
-    private boolean isSystemTheme = false;  // should be false by default
+    private boolean isSystemTheme = false; // should be false by default
 
     @Data
     @AllArgsConstructor

@@ -1,8 +1,15 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.external.models;
+
+import static com.appsmith.external.helpers.AppsmithBeanUtils.copyNestedNonNullProperties;
 
 import com.appsmith.external.views.Views;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,13 +18,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.util.CollectionUtils;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import static com.appsmith.external.helpers.AppsmithBeanUtils.copyNestedNonNullProperties;
 
 @Getter
 @Setter
@@ -41,7 +41,7 @@ public class Datasource extends BranchAwareDomain implements Forkable<Datasource
     @JsonView(Views.Public.class)
     String pluginName;
 
-    //Organizations migrated to workspaces, kept the field as deprecated to support the old migration
+    // Organizations migrated to workspaces, kept the field as deprecated to support the old migration
     @Deprecated
     @JsonView(Views.Public.class)
     String organizationId;
@@ -58,7 +58,6 @@ public class Datasource extends BranchAwareDomain implements Forkable<Datasource
     @Transient
     @JsonView(Views.Internal.class)
     Map<String, DatasourceStorageDTO> datasourceStorages = new HashMap<>();
-
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonView(Views.Public.class)

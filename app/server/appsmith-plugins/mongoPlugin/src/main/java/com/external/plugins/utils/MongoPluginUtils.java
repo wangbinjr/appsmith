@@ -1,4 +1,11 @@
+/* Copyright 2019-2023 Appsmith */
 package com.external.plugins.utils;
+
+import static com.appsmith.external.helpers.PluginUtils.STRING_TYPE;
+import static com.appsmith.external.helpers.PluginUtils.getDataValueSafelyFromFormData;
+import static com.external.plugins.constants.FieldName.BODY;
+import static com.external.plugins.constants.FieldName.COMMAND;
+import static com.external.plugins.constants.FieldName.RAW;
 
 import com.appsmith.external.exceptions.pluginExceptions.AppsmithPluginError;
 import com.appsmith.external.exceptions.pluginExceptions.AppsmithPluginException;
@@ -15,18 +22,7 @@ import com.external.plugins.commands.Find;
 import com.external.plugins.commands.Insert;
 import com.external.plugins.commands.MongoCommand;
 import com.external.plugins.commands.UpdateMany;
-
 import com.external.plugins.exceptions.MongoPluginErrorMessages;
-import org.bson.BsonInvalidOperationException;
-import org.bson.Document;
-import org.bson.json.JsonParseException;
-import org.bson.types.Decimal128;
-import org.bson.types.ObjectId;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.springframework.util.StringUtils;
-
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -37,12 +33,14 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.appsmith.external.helpers.PluginUtils.STRING_TYPE;
-import static com.appsmith.external.helpers.PluginUtils.getDataValueSafelyFromFormData;
-import static com.external.plugins.constants.FieldName.BODY;
-import static com.external.plugins.constants.FieldName.COMMAND;
-import static com.external.plugins.constants.FieldName.RAW;
+import org.bson.BsonInvalidOperationException;
+import org.bson.Document;
+import org.bson.json.JsonParseException;
+import org.bson.types.Decimal128;
+import org.bson.types.ObjectId;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.springframework.util.StringUtils;
 
 public class MongoPluginUtils {
 
@@ -50,26 +48,32 @@ public class MongoPluginUtils {
         try {
             return Document.parse(input);
         } catch (JsonParseException | BsonInvalidOperationException e) {
-            throw new AppsmithPluginException(AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR, String.format(MongoPluginErrorMessages.UNPARSABLE_FIELDNAME_ERROR_MSG, fieldName), e.getMessage());
+            throw new AppsmithPluginException(
+                    AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR,
+                    String.format(MongoPluginErrorMessages.UNPARSABLE_FIELDNAME_ERROR_MSG, fieldName),
+                    e.getMessage());
         }
     }
 
-    public static Object parseSafelyDocumentAndArrayOfDocuments(String fieldName, String input){
+    public static Object parseSafelyDocumentAndArrayOfDocuments(String fieldName, String input) {
         try {
             return parseSafely(fieldName, input);
         } catch (AppsmithPluginException e) {
             try {
                 List<Document> parsedDocumentList = new ArrayList<>();
-                JSONArray rawInputJsonArray  = new JSONArray(input);
-                for (int i=0; i < rawInputJsonArray.length(); i++) {
-                    parsedDocumentList.add(parseSafely(fieldName, rawInputJsonArray.getJSONObject(i).toString()));
+                JSONArray rawInputJsonArray = new JSONArray(input);
+                for (int i = 0; i < rawInputJsonArray.length(); i++) {
+                    parsedDocumentList.add(parseSafely(
+                            fieldName, rawInputJsonArray.getJSONObject(i).toString()));
                 }
                 return parsedDocumentList;
             } catch (JSONException ne) {
-                throw new AppsmithPluginException(AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR, String.format(MongoPluginErrorMessages.UNPARSABLE_FIELDNAME_ERROR_MSG, fieldName), e.getMessage());
+                throw new AppsmithPluginException(
+                        AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR,
+                        String.format(MongoPluginErrorMessages.UNPARSABLE_FIELDNAME_ERROR_MSG, fieldName),
+                        e.getMessage());
             }
         }
-   
     }
 
     public static Boolean isRawCommand(Map<String, Object> formData) {
@@ -85,7 +89,11 @@ public class MongoPluginUtils {
                 // Parse the commands into raw appropriately
                 MongoCommand command = getMongoCommand(actionConfiguration);
                 if (!command.isValid()) {
-                    throw new AppsmithPluginException(AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR, String.format(MongoPluginErrorMessages.FIELD_WITH_NO_CONFIGURATION_ERROR_MSG, command.getFieldNamesWithNoConfiguration()));
+                    throw new AppsmithPluginException(
+                            AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR,
+                            String.format(
+                                    MongoPluginErrorMessages.FIELD_WITH_NO_CONFIGURATION_ERROR_MSG,
+                                    command.getFieldNamesWithNoConfiguration()));
                 }
 
                 return command.parseCommand().toJson();
@@ -97,7 +105,8 @@ public class MongoPluginUtils {
         return PluginUtils.getDataValueSafelyFromFormData(formData, BODY, PluginUtils.STRING_TYPE);
     }
 
-    private static MongoCommand getMongoCommand(ActionConfiguration actionConfiguration) throws AppsmithPluginException {
+    private static MongoCommand getMongoCommand(ActionConfiguration actionConfiguration)
+            throws AppsmithPluginException {
         Map<String, Object> formData = actionConfiguration.getFormData();
         MongoCommand command;
         switch (getDataValueSafelyFromFormData(formData, COMMAND, STRING_TYPE, "")) {
@@ -123,8 +132,9 @@ public class MongoPluginUtils {
                 command = new Aggregate(actionConfiguration);
                 break;
             default:
-                throw new AppsmithPluginException(AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR, MongoPluginErrorMessages.NO_VALID_MONGO_COMMAND_FOUND_ERROR_MSG
-                        );
+                throw new AppsmithPluginException(
+                        AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR,
+                        MongoPluginErrorMessages.NO_VALID_MONGO_COMMAND_FOUND_ERROR_MSG);
         }
 
         return command;
@@ -145,16 +155,19 @@ public class MongoPluginUtils {
         }
 
         if (databaseName == null) {
-            throw new AppsmithPluginException(AppsmithPluginError.PLUGIN_DATASOURCE_ARGUMENT_ERROR, MongoPluginErrorMessages.DS_MISSING_DEFAULT_DATABASE_NAME_ERROR_MSG);
+            throw new AppsmithPluginException(
+                    AppsmithPluginError.PLUGIN_DATASOURCE_ARGUMENT_ERROR,
+                    MongoPluginErrorMessages.DS_MISSING_DEFAULT_DATABASE_NAME_ERROR_MSG);
         }
 
         return databaseName;
     }
 
-    public static void generateTemplatesAndStructureForACollection(String collectionName,
-                                                                   Document document,
-                                                                   ArrayList<DatasourceStructure.Column> columns,
-                                                                   ArrayList<DatasourceStructure.Template> templates) {
+    public static void generateTemplatesAndStructureForACollection(
+            String collectionName,
+            Document document,
+            ArrayList<DatasourceStructure.Column> columns,
+            ArrayList<DatasourceStructure.Template> templates) {
         String filterFieldName = null;
         String filterFieldValue = null;
         Map<String, String> sampleInsertValues = new LinkedHashMap<>();
@@ -212,35 +225,19 @@ public class MongoPluginUtils {
         templateConfiguration.put("filterFieldValue", filterFieldValue);
         templateConfiguration.put("sampleInsertValues", sampleInsertValues);
 
-        templates.addAll(
-                new Find().generateTemplate(templateConfiguration)
-        );
+        templates.addAll(new Find().generateTemplate(templateConfiguration));
 
+        templates.addAll(new Insert().generateTemplate(templateConfiguration));
 
-        templates.addAll(
-                new Insert().generateTemplate(templateConfiguration)
-        );
+        templates.addAll(new UpdateMany().generateTemplate(templateConfiguration));
 
-        templates.addAll(
-                new UpdateMany().generateTemplate(templateConfiguration)
-        );
+        templates.addAll(new Delete().generateTemplate(templateConfiguration));
 
-        templates.addAll(
-                new Delete().generateTemplate(templateConfiguration)
-        );
+        templates.addAll(new Count().generateTemplate(templateConfiguration));
 
-        templates.addAll(
-                new Count().generateTemplate(templateConfiguration)
-        );
+        templates.addAll(new Distinct().generateTemplate(templateConfiguration));
 
-        templates.addAll(
-                new Distinct().generateTemplate(templateConfiguration)
-        );
-
-        templates.addAll(
-                new Aggregate().generateTemplate(templateConfiguration)
-        );
-
+        templates.addAll(new Aggregate().generateTemplate(templateConfiguration));
     }
 
     public static String urlEncode(String text) {
@@ -251,5 +248,4 @@ public class MongoPluginUtils {
         MongoCommand command = getMongoCommand(actionConfiguration);
         return command.getRawQuery();
     }
-
 }

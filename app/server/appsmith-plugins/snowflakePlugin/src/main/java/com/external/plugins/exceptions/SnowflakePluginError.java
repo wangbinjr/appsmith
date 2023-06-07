@@ -1,11 +1,11 @@
+/* Copyright 2019-2023 Appsmith */
 package com.external.plugins.exceptions;
 
 import com.appsmith.external.exceptions.AppsmithErrorAction;
 import com.appsmith.external.exceptions.pluginExceptions.BasePluginError;
 import com.appsmith.external.models.ErrorType;
-import lombok.Getter;
-
 import java.text.MessageFormat;
+import lombok.Getter;
 
 @Getter
 public enum SnowflakePluginError implements BasePluginError {
@@ -17,8 +17,7 @@ public enum SnowflakePluginError implements BasePluginError {
             "Query execution error",
             ErrorType.INTERNAL_ERROR,
             "{1}",
-            "{2}"
-    ),
+            "{2}"),
     SNOWFLAKE_PLUGIN_ERROR(
             500,
             "PE-SNW-5001",
@@ -27,8 +26,7 @@ public enum SnowflakePluginError implements BasePluginError {
             "Query execution error",
             ErrorType.INTERNAL_ERROR,
             "{1}",
-            "{2}"
-    ),
+            "{2}"),
     ;
     private final Integer httpErrorCode;
     private final String appErrorCode;
@@ -41,8 +39,15 @@ public enum SnowflakePluginError implements BasePluginError {
 
     private final String downstreamErrorCode;
 
-    SnowflakePluginError(Integer httpErrorCode, String appErrorCode, String message, AppsmithErrorAction errorAction,
-                         String title, ErrorType errorType, String downstreamErrorMessage, String downstreamErrorCode) {
+    SnowflakePluginError(
+            Integer httpErrorCode,
+            String appErrorCode,
+            String message,
+            AppsmithErrorAction errorAction,
+            String title,
+            ErrorType errorType,
+            String downstreamErrorMessage,
+            String downstreamErrorCode) {
         this.httpErrorCode = httpErrorCode;
         this.appErrorCode = appErrorCode;
         this.errorType = errorType;
@@ -57,7 +62,9 @@ public enum SnowflakePluginError implements BasePluginError {
         return new MessageFormat(this.message).format(args);
     }
 
-    public String getErrorType() { return this.errorType.toString(); }
+    public String getErrorType() {
+        return this.errorType.toString();
+    }
 
     public String getDownstreamErrorMessage(Object... args) {
         return replacePlaceholderWithValue(this.downstreamErrorMessage, args);

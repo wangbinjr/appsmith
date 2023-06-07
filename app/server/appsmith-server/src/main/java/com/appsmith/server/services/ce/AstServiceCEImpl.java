@@ -1,3 +1,4 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.services.ce;
 
 import com.appsmith.external.helpers.MustacheHelper;
@@ -7,6 +8,13 @@ import com.appsmith.server.configurations.InstanceConfig;
 import com.appsmith.server.exceptions.AppsmithError;
 import com.appsmith.server.exceptions.AppsmithException;
 import com.appsmith.util.WebClientUtils;
+import java.time.Duration;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,14 +32,6 @@ import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 import reactor.util.retry.Retry;
 
-import java.time.Duration;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 @Slf4j
 @RequiredArgsConstructor
 public class AstServiceCEImpl implements AstServiceCE {
@@ -48,17 +48,18 @@ public class AstServiceCEImpl implements AstServiceCE {
             .pendingAcquireMaxCount(-1)
             .build());
 
-    private final static long MAX_API_RESPONSE_TIME_IN_MS = 50;
+    private static final long MAX_API_RESPONSE_TIME_IN_MS = 50;
 
     @Override
-    public Flux<Tuple2<String, Set<String>>> getPossibleReferencesFromDynamicBinding(List<String> bindingValues, int evalVersion) {
-        if (bindingValues == null || bindingValues.size() == 0) {
+    public Flux<Tuple2<String, Set<String>>> getPossibleReferencesFromDynamicBinding(
+            List<String> bindingValues, int evalVersion) {
+        if (bindingValues == null || bindingValues.isEmpty()) {
             return Flux.empty();
         }
         /*
-            For the binding value which starts with "appsmith.theme" can be directly served
-            without calling the AST API or the calling the method for non-AST implementation
-         */
+           For the binding value which starts with "appsmith.theme" can be directly served
+           without calling the AST API or the calling the method for non-AST implementation
+        */
         if (bindingValues.size() == 1 && bindingValues.get(0).startsWith("appsmith.theme.")) {
             return Flux.just(Tuples.of(bindingValues.get(0), new HashSet<>(bindingValues)));
         }
@@ -66,12 +67,11 @@ public class AstServiceCEImpl implements AstServiceCE {
         // If RTS server is not accessible for this instance, it means that this is a slim container set up
         // Proceed with assuming that all words need to be processed as possible entity references
         if (Boolean.FALSE.equals(instanceConfig.getIsRtsAccessible())) {
-            return Flux.fromIterable(bindingValues)
-                    .flatMap(
-                            bindingValue -> {
-                                return Mono.zip(Mono.just(bindingValue), Mono.just(new HashSet<>(MustacheHelper.getPossibleParentsOld(bindingValue))));
-                            }
-                    );
+            return Flux.fromIterable(bindingValues).flatMap(bindingValue -> {
+                return Mono.zip(
+                        Mono.just(bindingValue),
+                        Mono.just(new HashSet<>(MustacheHelper.getPossibleParentsOld(bindingValue))));
+            });
         }
         return webClient
                 .post()
@@ -92,14 +92,20 @@ public class AstServiceCEImpl implements AstServiceCE {
     }
 
     @Override
-    public Mono<Map<MustacheBindingToken, String>> refactorNameInDynamicBindings(Set<MustacheBindingToken> bindingValues, String oldName, String newName, int evalVersion, boolean isJSObject) {
+    public Mono<Map<MustacheBindingToken, String>> refactorNameInDynamicBindings(
+            Set<MustacheBindingToken> bindingValues,
+            String oldName,
+            String newName,
+            int evalVersion,
+            boolean isJSObject) {
         if (bindingValues == null || bindingValues.isEmpty()) {
             return Mono.empty();
         }
 
         return Flux.fromIterable(bindingValues)
                 .flatMap(bindingValue -> {
-                    EntityRefactorRequest entityRefactorRequest = new EntityRefactorRequest(bindingValue.getValue(), oldName, newName, evalVersion, isJSObject);
+                    EntityRefactorRequest entityRefactorRequest = new EntityRefactorRequest(
+                            bindingValue.getValue(), oldName, newName, evalVersion, isJSObject);
                     return webClient
                             .post()
                             .uri(commonConfig.getRtsBaseUrl() + "/rts-api/v1/ast/entity-refactor")
@@ -109,9 +115,12 @@ public class AstServiceCEImpl implements AstServiceCE {
                             .toEntity(EntityRefactorResponse.class)
                             .flatMap(entityRefactorResponseResponseEntity -> {
                                 if (HttpStatus.OK.equals(entityRefactorResponseResponseEntity.getStatusCode())) {
-                                    return Mono.just(Objects.requireNonNull(entityRefactorResponseResponseEntity.getBody()));
+                                    return Mono.just(
+                                            Objects.requireNonNull(entityRefactorResponseResponseEntity.getBody()));
                                 }
-                                return Mono.error(new AppsmithException(AppsmithError.RTS_SERVER_ERROR, entityRefactorResponseResponseEntity.getStatusCodeValue()));
+                                return Mono.error(new AppsmithException(
+                                        AppsmithError.RTS_SERVER_ERROR,
+                                        entityRefactorResponseResponseEntity.getStatusCodeValue()));
                             })
                             .elapsed()
                             .map(tuple -> {
@@ -126,7 +135,8 @@ public class AstServiceCEImpl implements AstServiceCE {
                             .flatMap(response -> Mono.just(bindingValue).zipWith(Mono.just(response.script)))
                             .onErrorResume(error -> {
                                 var temp = bindingValue;
-                                // If there is a problem with parsing and refactoring this binding, we just ignore it and move ahead
+                                // If there is a problem with parsing and refactoring this binding, we just ignore it
+                                // and move ahead
                                 // The expectation is that this binding would error out during eval anyway
                                 return Mono.empty();
                             });

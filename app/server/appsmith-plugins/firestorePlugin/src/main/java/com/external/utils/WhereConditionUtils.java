@@ -1,3 +1,4 @@
+/* Copyright 2019-2023 Appsmith */
 package com.external.utils;
 
 import com.appsmith.external.constants.ConditionalOperator;
@@ -9,27 +10,26 @@ import com.external.plugins.exceptions.FirestoreErrorMessages;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.firestore.FieldPath;
 import com.google.cloud.firestore.Query;
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 public class WhereConditionUtils {
 
     protected static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public static Query applyWhereConditional(Query query, String strPath, String operatorString, String strValue) throws AppsmithPluginException {
+    public static Query applyWhereConditional(Query query, String strPath, String operatorString, String strValue)
+            throws AppsmithPluginException {
 
         String path = strPath.trim();
 
         if (query == null) {
             throw new AppsmithPluginException(
                     AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR,
-                    FirestoreErrorMessages.WHERE_CONDITIONAL_NULL_QUERY_ERROR_MSG
-            );
+                    FirestoreErrorMessages.WHERE_CONDITIONAL_NULL_QUERY_ERROR_MSG);
         }
 
         ConditionalOperator operator;
@@ -39,8 +39,7 @@ public class WhereConditionUtils {
             throw new AppsmithPluginException(
                     AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR,
                     FirestoreErrorMessages.WHERE_CONDITION_INVALID_OPERATOR_ERROR_MSG,
-                    e.getMessage()
-            );
+                    e.getMessage());
         }
 
         DataType dataType = DataTypeStringUtils.stringToKnownDataTypeConverter(strValue);
@@ -66,7 +65,7 @@ public class WhereConditionUtils {
                 try {
                     date = sdf.parse(strValue);
                 } catch (ParseException e) {
-                    //Input may not be of above pattern
+                    // Input may not be of above pattern
                 }
                 value = date;
                 break;
@@ -77,7 +76,7 @@ public class WhereConditionUtils {
                 try {
                     timeStamp = sdfTs.parse(strValue);
                 } catch (ParseException e) {
-                    //Input may not be of above pattern
+                    // Input may not be of above pattern
                 }
                 value = timeStamp;
                 break;
@@ -91,9 +90,9 @@ public class WhereConditionUtils {
                 return query.whereLessThanOrEqualTo(fieldPath, value);
             case EQ:
                 return query.whereEqualTo(fieldPath, value);
-            // TODO: NOT_EQ operator support is awaited in the next version of Firestore driver.
-            // case NOT_EQ:
-            //     return Mono.just(query.whereNotEqualTo(path, value));
+                // TODO: NOT_EQ operator support is awaited in the next version of Firestore driver.
+                // case NOT_EQ:
+                //     return Mono.just(query.whereNotEqualTo(path, value));
             case GT:
                 return query.whereGreaterThan(fieldPath, value);
             case GTE:
@@ -107,8 +106,7 @@ public class WhereConditionUtils {
                     throw new AppsmithPluginException(
                             AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR,
                             FirestoreErrorMessages.WHERE_CONDITION_UNPARSABLE_AS_JSON_LIST_ERROR_MSG,
-                            e.getMessage()
-                    );
+                            e.getMessage());
                 }
             case IN:
                 try {
@@ -117,8 +115,7 @@ public class WhereConditionUtils {
                     throw new AppsmithPluginException(
                             AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR,
                             FirestoreErrorMessages.WHERE_CONDITION_UNPARSABLE_AS_JSON_LIST_ERROR_MSG,
-                            e.getMessage()
-                    );
+                            e.getMessage());
                 }
                 // TODO: NOT_IN operator support is awaited in the next version of Firestore driver.
                 // case NOT_IN:
@@ -126,8 +123,7 @@ public class WhereConditionUtils {
             default:
                 throw new AppsmithPluginException(
                         AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR,
-                        FirestoreErrorMessages.WHERE_CONDITION_INVALID_OPERATOR_ERROR_MSG
-                );
+                        FirestoreErrorMessages.WHERE_CONDITION_INVALID_OPERATOR_ERROR_MSG);
         }
     }
 

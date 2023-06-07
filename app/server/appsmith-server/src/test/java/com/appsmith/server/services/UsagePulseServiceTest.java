@@ -1,4 +1,7 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.services;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.appsmith.server.configurations.CommonConfig;
 import com.appsmith.server.constants.FieldName;
@@ -16,8 +19,6 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.test.StepVerifier;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -133,6 +134,5 @@ public class UsagePulseServiceTest {
         assertThat(usagePulseCount).isNotNull();
         assertThat(usagePulseCountForSelfHostedInstance).isEqualTo(usagePulseCount + 1);
         assertThat(usagePulseCountForSelfHostedInstance).isEqualTo(usagePulseCountForCloud);
-
     }
 }

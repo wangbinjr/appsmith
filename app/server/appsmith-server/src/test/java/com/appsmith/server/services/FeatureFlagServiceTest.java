@@ -1,4 +1,9 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.services;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.appsmith.server.featureflags.FeatureFlagEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -14,11 +19,6 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.test.StepVerifier;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -92,5 +92,4 @@ public class FeatureFlagServiceTest {
             return ff4j;
         }
     }
-
 }

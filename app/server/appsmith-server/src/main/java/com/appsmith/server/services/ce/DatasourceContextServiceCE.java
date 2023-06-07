@@ -1,12 +1,12 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.services.ce;
 
 import com.appsmith.external.models.DatasourceStorage;
 import com.appsmith.server.domains.DatasourceContext;
 import com.appsmith.server.domains.DatasourceContextIdentifier;
 import com.appsmith.server.domains.Plugin;
-import reactor.core.publisher.Mono;
-
 import java.util.function.Function;
+import reactor.core.publisher.Mono;
 
 public interface DatasourceContextServiceCE {
 
@@ -26,8 +26,7 @@ public interface DatasourceContextServiceCE {
 
     Mono<DatasourceContext<?>> getRemoteDatasourceContext(Plugin plugin, DatasourceStorage datasourceStorage);
 
-    <T> Mono<T> retryOnce(DatasourceStorage datasourceStorage,
-                          Function<DatasourceContext<?>, Mono<T>> task);
+    <T> Mono<T> retryOnce(DatasourceStorage datasourceStorage, Function<DatasourceContext<?>, Mono<T>> task);
 
     Mono<DatasourceContext<?>> deleteDatasourceContext(DatasourceStorage datasourceStorage);
 

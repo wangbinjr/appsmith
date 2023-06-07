@@ -1,3 +1,4 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.external.models;
 
 import com.appsmith.external.annotations.documenttype.DocumentType;
@@ -6,6 +7,10 @@ import com.appsmith.external.constants.Authentication;
 import com.appsmith.external.exceptions.pluginExceptions.AppsmithPluginError;
 import com.appsmith.external.exceptions.pluginExceptions.AppsmithPluginException;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,11 +20,6 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.annotation.Transient;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
-
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -51,8 +51,7 @@ public class OAuth2 extends AuthenticationDTO {
 
     String clientId;
 
-    @Encrypted
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Encrypted @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String clientSecret;
 
     String authorizationUrl;

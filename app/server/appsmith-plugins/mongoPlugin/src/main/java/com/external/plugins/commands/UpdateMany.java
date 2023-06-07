@@ -1,19 +1,5 @@
+/* Copyright 2019-2023 Appsmith */
 package com.external.plugins.commands;
-
-import com.appsmith.external.helpers.PluginUtils;
-import com.appsmith.external.models.ActionConfiguration;
-import com.appsmith.external.models.DatasourceStructure;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.bson.Document;
-import org.pf4j.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static com.appsmith.external.helpers.PluginUtils.STRING_TYPE;
 import static com.appsmith.external.helpers.PluginUtils.setDataValueSafelyInFormData;
@@ -27,6 +13,20 @@ import static com.external.plugins.constants.FieldName.UPDATE_OPERATION;
 import static com.external.plugins.constants.FieldName.UPDATE_QUERY;
 import static com.external.plugins.utils.MongoPluginUtils.parseSafely;
 import static com.external.plugins.utils.MongoPluginUtils.parseSafelyDocumentAndArrayOfDocuments;
+
+import com.appsmith.external.helpers.PluginUtils;
+import com.appsmith.external.models.ActionConfiguration;
+import com.appsmith.external.models.DatasourceStructure;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.bson.Document;
+import org.pf4j.util.StringUtils;
 
 @Getter
 @Setter
@@ -111,27 +111,23 @@ public class UpdateMany extends MongoCommand {
         setDataValueSafelyInFormData(configMap, COMMAND, "UPDATE");
         setDataValueSafelyInFormData(configMap, COLLECTION, collectionName);
         setDataValueSafelyInFormData(configMap, UPDATE_QUERY, "{ \"_id\": ObjectId(\"id_of_document_to_update\") }");
-        setDataValueSafelyInFormData(configMap, UPDATE_OPERATION, "{ \"$set\": { \"" + filterFieldName + "\": \"new value\" } }");
+        setDataValueSafelyInFormData(
+                configMap, UPDATE_OPERATION, "{ \"$set\": { \"" + filterFieldName + "\": \"new value\" } }");
         setDataValueSafelyInFormData(configMap, UPDATE_LIMIT, "ALL");
 
-        String rawQuery = "{\n" +
-                "  \"update\": \"" + collectionName + "\",\n" +
-                "  \"updates\": [\n" +
-                "    {\n" +
-                "      \"q\": {\n" +
-                "        \"_id\": ObjectId(\"id_of_document_to_update\")\n" +
-                "      },\n" +
-                "      \"u\": { \"$set\": { \"" + filterFieldName + "\": \"new value\" } }\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}\n";
+        String rawQuery = "{\n" + "  \"update\": \""
+                + collectionName + "\",\n" + "  \"updates\": [\n"
+                + "    {\n"
+                + "      \"q\": {\n"
+                + "        \"_id\": ObjectId(\"id_of_document_to_update\")\n"
+                + "      },\n"
+                + "      \"u\": { \"$set\": { \""
+                + filterFieldName + "\": \"new value\" } }\n" + "    }\n"
+                + "  ]\n"
+                + "}\n";
         setDataValueSafelyInFormData(configMap, BODY, rawQuery);
 
-        return Collections.singletonList(new DatasourceStructure.Template(
-                "Update",
-                null,
-                configMap
-        ));
+        return Collections.singletonList(new DatasourceStructure.Template("Update", null, configMap));
     }
 
     /**

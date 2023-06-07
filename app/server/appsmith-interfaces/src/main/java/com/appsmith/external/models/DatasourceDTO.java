@@ -1,17 +1,16 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.external.models;
 
-import com.appsmith.external.models.DatasourceConfiguration;
 import com.appsmith.external.views.Views;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Transient;
 import org.springframework.util.CollectionUtils;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -56,7 +55,6 @@ public class DatasourceDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonView(Views.Public.class)
     Set<String> messages;
-
 
     /*
      * This field is introduced as part of git sync feature, for the git import we will need to identify the datasource's

@@ -1,10 +1,10 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.external.models;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Map;
 import java.util.Set;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * A DTO class to hold complete information about an application, which will then be serialized to a file so as to

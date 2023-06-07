@@ -1,9 +1,9 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.solutions.ce;
 
 import com.appsmith.server.dtos.ReleaseNode;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
+import reactor.core.publisher.Mono;
 
 public interface ReleaseNotesServiceCE {
 
@@ -20,5 +20,4 @@ public interface ReleaseNotesServiceCE {
     List<ReleaseNode> getReleaseNodesCache();
 
     void setReleaseNodesCache(List<ReleaseNode> nodes);
-
 }

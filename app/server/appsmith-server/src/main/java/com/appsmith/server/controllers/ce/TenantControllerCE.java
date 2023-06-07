@@ -1,3 +1,4 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.controllers.ce;
 
 import com.appsmith.external.views.Views;
@@ -6,12 +7,11 @@ import com.appsmith.server.domains.Tenant;
 import com.appsmith.server.dtos.ResponseDTO;
 import com.appsmith.server.services.TenantService;
 import com.fasterxml.jackson.annotation.JsonView;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import reactor.core.publisher.Mono;
-
-import java.util.Map;
 
 @RequestMapping(Url.TENANT_URL)
 public class TenantControllerCE {
@@ -37,5 +37,4 @@ public class TenantControllerCE {
         return service.getTenantConfiguration()
                 .map(resource -> new ResponseDTO<>(HttpStatus.OK.value(), resource, null));
     }
-
 }

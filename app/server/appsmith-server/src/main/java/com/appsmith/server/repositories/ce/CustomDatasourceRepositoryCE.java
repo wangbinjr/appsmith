@@ -1,13 +1,13 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.repositories.ce;
 
 import com.appsmith.external.models.Datasource;
 import com.appsmith.server.acl.AclPermission;
 import com.appsmith.server.repositories.AppsmithRepository;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.util.Optional;
 import java.util.Set;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface CustomDatasourceRepositoryCE extends AppsmithRepository<Datasource> {
 
@@ -22,5 +22,4 @@ public interface CustomDatasourceRepositoryCE extends AppsmithRepository<Datasou
     Mono<Datasource> findById(String id, AclPermission aclPermission);
 
     Flux<Datasource> findAllByIds(Set<String> ids, AclPermission permission);
-
 }

@@ -1,3 +1,4 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.services.ce;
 
 import com.appsmith.external.models.BaseDomain;
@@ -6,11 +7,10 @@ import com.appsmith.server.domains.PermissionGroup;
 import com.appsmith.server.domains.User;
 import com.appsmith.server.domains.Workspace;
 import com.appsmith.server.services.CrudService;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.Set;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface PermissionGroupServiceCE extends CrudService<PermissionGroup, String> {
 
@@ -18,7 +18,8 @@ public interface PermissionGroupServiceCE extends CrudService<PermissionGroup, S
 
     Mono<PermissionGroup> bulkUnassignFromUsers(String permissionGroupId, List<User> users);
 
-    Mono<Boolean> bulkUnassignUsersFromPermissionGroupsWithoutPermission(Set<String> userIds, Set<String> permissionGroupIds);
+    Mono<Boolean> bulkUnassignUsersFromPermissionGroupsWithoutPermission(
+            Set<String> userIds, Set<String> permissionGroupIds);
 
     Flux<PermissionGroup> getByDefaultWorkspace(Workspace workspace, AclPermission permission);
 
@@ -34,7 +35,8 @@ public interface PermissionGroupServiceCE extends CrudService<PermissionGroup, S
 
     Mono<PermissionGroup> unassignFromUser(PermissionGroup permissionGroup, User user);
 
-    Flux<PermissionGroup> getAllByAssignedToUserAndDefaultWorkspace(User user, Workspace defaultWorkspace, AclPermission aclPermission);
+    Flux<PermissionGroup> getAllByAssignedToUserAndDefaultWorkspace(
+            User user, Workspace defaultWorkspace, AclPermission aclPermission);
 
     Mono<Void> delete(String id);
 

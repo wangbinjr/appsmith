@@ -1,27 +1,5 @@
+/* Copyright 2019-2023 Appsmith */
 package com.external.plugins.commands;
-
-import com.appsmith.external.constants.DataType;
-import com.appsmith.external.exceptions.pluginExceptions.AppsmithPluginError;
-import com.appsmith.external.exceptions.pluginExceptions.AppsmithPluginException;
-import com.appsmith.external.helpers.DataTypeStringUtils;
-import com.appsmith.external.helpers.PluginUtils;
-import com.appsmith.external.models.ActionConfiguration;
-import com.appsmith.external.models.DatasourceStructure;
-import com.external.plugins.exceptions.MongoPluginErrorMessages;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.bson.BsonArray;
-import org.bson.Document;
-import org.bson.json.JsonParseException;
-import org.pf4j.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.appsmith.external.helpers.PluginUtils.STRING_TYPE;
 import static com.appsmith.external.helpers.PluginUtils.setDataValueSafelyInFormData;
@@ -34,6 +12,28 @@ import static com.external.plugins.constants.FieldName.INSERT_DOCUMENT;
 import static com.external.plugins.constants.FieldName.SMART_SUBSTITUTION;
 import static com.external.plugins.utils.MongoPluginUtils.parseSafely;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+
+import com.appsmith.external.constants.DataType;
+import com.appsmith.external.exceptions.pluginExceptions.AppsmithPluginError;
+import com.appsmith.external.exceptions.pluginExceptions.AppsmithPluginException;
+import com.appsmith.external.helpers.DataTypeStringUtils;
+import com.appsmith.external.helpers.PluginUtils;
+import com.appsmith.external.models.ActionConfiguration;
+import com.appsmith.external.models.DatasourceStructure;
+import com.external.plugins.exceptions.MongoPluginErrorMessages;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.bson.BsonArray;
+import org.bson.Document;
+import org.bson.json.JsonParseException;
+import org.pf4j.util.StringUtils;
 
 @Getter
 @Setter
@@ -79,7 +79,10 @@ public class Insert extends MongoCommand {
                     commandDocument.put("documents", arrayListFromInput);
                 }
             } catch (JsonParseException e) {
-                throw new AppsmithPluginException(AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR, MongoPluginErrorMessages.DOCUMENTS_NOT_PARSABLE_INTO_JSON_ARRAY_ERROR_MSG, e.getMessage());
+                throw new AppsmithPluginException(
+                        AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR,
+                        MongoPluginErrorMessages.DOCUMENTS_NOT_PARSABLE_INTO_JSON_ARRAY_ERROR_MSG,
+                        e.getMessage());
             }
         } else {
             // The command expects the documents to be sent in an array. Parse and create a single element array
@@ -110,21 +113,16 @@ public class Insert extends MongoCommand {
         setDataValueSafelyInFormData(configMap, INSERT_DOCUMENT, "[{" + sampleInsertDocuments + "}]");
         setDataValueSafelyInFormData(configMap, COLLECTION, collectionName);
 
-        String rawQuery = "{\n" +
-                "  \"insert\": \"" + collectionName + "\",\n" +
-                "  \"documents\": [\n" +
-                "    {\n" +
-                sampleInsertDocuments +
-                "    }\n" +
-                "  ]\n" +
-                "}\n";
+        String rawQuery = "{\n" + "  \"insert\": \""
+                + collectionName + "\",\n" + "  \"documents\": [\n"
+                + "    {\n"
+                + sampleInsertDocuments
+                + "    }\n"
+                + "  ]\n"
+                + "}\n";
         setDataValueSafelyInFormData(configMap, BODY, rawQuery);
 
-        return Collections.singletonList(new DatasourceStructure.Template(
-                "Insert",
-                null,
-                configMap
-        ));
+        return Collections.singletonList(new DatasourceStructure.Template("Insert", null, configMap));
     }
 
     /**

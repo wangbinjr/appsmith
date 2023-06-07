@@ -1,7 +1,7 @@
+/* Copyright 2019-2023 Appsmith */
 package com.external.utils;
 
 import com.google.gson.GsonBuilder;
-
 import java.util.List;
 import java.util.Map;
 

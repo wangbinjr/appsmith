@@ -1,20 +1,20 @@
+/* Copyright 2019-2023 Appsmith */
 package com.external.config;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.appsmith.external.exceptions.pluginExceptions.AppsmithPluginException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 public class FileListMethodTest {
 
@@ -127,7 +127,8 @@ public class FileListMethodTest {
     public void testTransformTriggerResponse_withAllSheetsAccess_returnsAllSheets() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        final String jsonString = "{\"files\":[{\"id\":\"id1\",\"name\":\"test1\"},{\"id\":\"id2\",\"name\":\"test2\"}]}";
+        final String jsonString =
+                "{\"files\":[{\"id\":\"id1\",\"name\":\"test1\"},{\"id\":\"id2\",\"name\":\"test2\"}]}";
 
         JsonNode jsonNode = objectMapper.readTree(jsonString);
         assertNotNull(jsonNode);
@@ -157,7 +158,8 @@ public class FileListMethodTest {
     public void testTransformTriggerResponse_withSpecificSheets_returnsSpecificSheets() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        final String jsonString = "{\"files\":[{\"id\":\"id1\",\"name\":\"test1\"},{\"id\":\"id2\",\"name\":\"test2\"}]}";
+        final String jsonString =
+                "{\"files\":[{\"id\":\"id1\",\"name\":\"test1\"},{\"id\":\"id2\",\"name\":\"test2\"}]}";
 
         JsonNode jsonNode = objectMapper.readTree(jsonString);
         Set<String> userAuthorizedSheetIds = new HashSet<String>();
@@ -183,7 +185,8 @@ public class FileListMethodTest {
     public void testTransformExecutionResponse_withAllSheetsAccess_returnsAllSheets() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        final String jsonString = "{\"files\":[{\"id\":\"id1\",\"name\":\"test1\"},{\"id\":\"id2\",\"name\":\"test2\"}]}";
+        final String jsonString =
+                "{\"files\":[{\"id\":\"id1\",\"name\":\"test1\"},{\"id\":\"id2\",\"name\":\"test2\"}]}";
 
         JsonNode jsonNode = objectMapper.readTree(jsonString);
         assertNotNull(jsonNode);
@@ -212,10 +215,12 @@ public class FileListMethodTest {
     }
 
     @Test
-    public void testTransformExecutionResponse_withSpecificSheets_returnsSpecificSheets() throws JsonProcessingException {
+    public void testTransformExecutionResponse_withSpecificSheets_returnsSpecificSheets()
+            throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        final String jsonString = "{\"files\":[{\"id\":\"id1\",\"name\":\"test1\"},{\"id\":\"id2\",\"name\":\"test2\"}]}";
+        final String jsonString =
+                "{\"files\":[{\"id\":\"id1\",\"name\":\"test1\"},{\"id\":\"id2\",\"name\":\"test2\"}]}";
 
         JsonNode jsonNode = objectMapper.readTree(jsonString);
         Set<String> userAuthorizedSheetIds = new HashSet<String>();

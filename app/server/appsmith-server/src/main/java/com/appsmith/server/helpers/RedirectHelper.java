@@ -1,3 +1,4 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.helpers;
 
 import com.appsmith.server.constants.Appsmith;
@@ -6,6 +7,10 @@ import com.appsmith.server.domains.Application;
 import com.appsmith.server.domains.ApplicationPage;
 import com.appsmith.server.repositories.ApplicationRepository;
 import com.appsmith.server.solutions.ApplicationPermission;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -17,12 +22,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-
 
 @Component
 @RequiredArgsConstructor
@@ -57,15 +56,13 @@ public class RedirectHelper {
         HttpHeaders httpHeaders = request.getHeaders();
 
         if (queryParams.getFirst(REDIRECT_URL_QUERY_PARAM) != null) {
-            return Mono.just(fulfillRedirectUrl(
-                    queryParams.getFirst(REDIRECT_URL_QUERY_PARAM),
-                    httpHeaders
-            ));
+            return Mono.just(fulfillRedirectUrl(queryParams.getFirst(REDIRECT_URL_QUERY_PARAM), httpHeaders));
 
         } else if (queryParams.getFirst(FORK_APP_ID_QUERY_PARAM) != null) {
             final String forkAppId = queryParams.getFirst(FORK_APP_ID_QUERY_PARAM);
             final String defaultRedirectUrl = httpHeaders.getOrigin() + DEFAULT_REDIRECT_URL;
-            return applicationRepository.findByClonedFromApplicationId(forkAppId, applicationPermission.getReadPermission())
+            return applicationRepository
+                    .findByClonedFromApplicationId(forkAppId, applicationPermission.getReadPermission())
                     .map(application -> {
                         // Get the default page in the application, or if there's no default page, get the first page
                         // in the application and redirect to edit that page.
@@ -92,7 +89,6 @@ public class RedirectHelper {
                     })
                     .defaultIfEmpty(defaultRedirectUrl)
                     .last();
-
         }
 
         return Mono.just(getRedirectUrlFromHeader(httpHeaders));
@@ -171,7 +167,9 @@ public class RedirectHelper {
             }
         } else if (!StringUtils.isEmpty(httpHeaders.getHost())) {
             // For HTTP v1 requests
-            String port = httpHeaders.getHost().getPort() != 80 ? ":" + httpHeaders.getHost().getPort() : "";
+            String port = httpHeaders.getHost().getPort() != 80
+                    ? ":" + httpHeaders.getHost().getPort()
+                    : "";
             redirectOrigin = httpHeaders.getHost().getHostName() + port;
         }
 
@@ -180,9 +178,12 @@ public class RedirectHelper {
 
     public String buildApplicationUrl(Application application, HttpHeaders httpHeaders) {
         String redirectUrl = RedirectHelper.DEFAULT_REDIRECT_URL;
-        if (application != null && application.getPages() != null && application.getPages().size() > 0) {
+        if (application != null
+                && application.getPages() != null
+                && application.getPages().size() > 0) {
             ApplicationPage applicationPage = application.getPages().get(0);
-            redirectUrl = String.format(RedirectHelper.APPLICATION_PAGE_URL, application.getId(), applicationPage.getId());
+            redirectUrl =
+                    String.format(RedirectHelper.APPLICATION_PAGE_URL, application.getId(), applicationPage.getId());
         }
         return fulfillRedirectUrl(redirectUrl, httpHeaders);
     }
@@ -204,7 +205,8 @@ public class RedirectHelper {
         }
     }
 
-    public Mono<Void> handleRedirect(WebFilterExchange webFilterExchange, Application defaultApplication, boolean isFromSignup) {
+    public Mono<Void> handleRedirect(
+            WebFilterExchange webFilterExchange, Application defaultApplication, boolean isFromSignup) {
         ServerWebExchange exchange = webFilterExchange.getExchange();
 
         // On authentication success, we send a redirect to the client's home page. This ensures that the session
@@ -246,7 +248,11 @@ public class RedirectHelper {
      * @return Redirect URL
      */
     private String buildFailureUrl(String redirectPrefix, String failureMessage) {
-        String url = redirectPrefix + CHARACTER_QUESTION_MARK + ERROR + CHARACTER_EQUALS + URLEncoder.encode(failureMessage, StandardCharsets.UTF_8);
+        String url = redirectPrefix
+                + CHARACTER_QUESTION_MARK
+                + ERROR
+                + CHARACTER_EQUALS
+                + URLEncoder.encode(failureMessage, StandardCharsets.UTF_8);
 
         return url;
     }
@@ -258,7 +264,8 @@ public class RedirectHelper {
      * @param failureMessage Failure message to be added to redirect URL
      * @return Mono of void
      */
-    public Mono<Void> handleErrorRedirect(WebFilterExchange webFilterExchange, String redirectPrefix, String failureMessage) {
+    public Mono<Void> handleErrorRedirect(
+            WebFilterExchange webFilterExchange, String redirectPrefix, String failureMessage) {
         ServerWebExchange exchange = webFilterExchange.getExchange();
         URI redirectURI = URI.create(buildFailureUrl(redirectPrefix, failureMessage));
 

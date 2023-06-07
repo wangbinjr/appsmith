@@ -1,7 +1,17 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.external.helpers.restApiUtils.helpers;
 
 import com.appsmith.external.exceptions.pluginExceptions.AppsmithPluginError;
 import com.appsmith.external.exceptions.pluginExceptions.AppsmithPluginException;
+import java.net.URI;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -19,16 +29,6 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserter;
 import reactor.core.publisher.Mono;
-
-import java.net.URI;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * This receiver essentially instantiates a custom ClientHttpRequest that stores the request body via a subscriber
@@ -54,9 +54,7 @@ public class BodyReceiver {
                 (BodyInserter<Object, MinimalHttpOutputMessage>) bodyInserter;
 
         inserter.insert(
-                MinimalHttpOutputMessage.INSTANCE,
-                new SingleWriterContext(new WriteToConsumer<>(reference::set))
-        );
+                MinimalHttpOutputMessage.INSTANCE, new SingleWriterContext(new WriteToConsumer<>(reference::set)));
     }
 
     private Object receivedValue() {
@@ -67,8 +65,7 @@ public class BodyReceiver {
 
         if (value == DUMMY) {
             throw new AppsmithPluginException(
-                    AppsmithPluginError.PLUGIN_ERROR,
-                    "Value was not received, check if your inserter worked properly");
+                    AppsmithPluginError.PLUGIN_ERROR, "Value was not received, check if your inserter worked properly");
         } else {
             validatedValue = value;
         }
@@ -102,8 +99,7 @@ public class BodyReceiver {
                 ResolvableType elementType,
                 MediaType mediaType,
                 ReactiveHttpOutputMessage message,
-                Map<String, Object> hints
-        ) {
+                Map<String, Object> hints) {
             inputStream.subscribe(new OneValueConsumption<>(consumer));
             return Mono.empty();
         }
@@ -113,8 +109,7 @@ public class BodyReceiver {
 
         public static final MinimalHttpOutputMessage INSTANCE = new MinimalHttpOutputMessage();
 
-        private MinimalHttpOutputMessage() {
-        }
+        private MinimalHttpOutputMessage() {}
 
         @Override
         public HttpHeaders getHeaders() {
@@ -127,8 +122,7 @@ public class BodyReceiver {
         }
 
         @Override
-        public void beforeCommit(Supplier<? extends Mono<Void>> action) {
-        }
+        public void beforeCommit(Supplier<? extends Mono<Void>> action) {}
 
         @Override
         public boolean isCommitted() {

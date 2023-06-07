@@ -1,12 +1,10 @@
+/* Copyright 2019-2023 Appsmith */
 package com.external.utils;
 
 import com.appsmith.external.exceptions.pluginExceptions.AppsmithPluginException;
 import com.appsmith.external.exceptions.pluginExceptions.StaleConnectionException;
 import com.external.plugins.exceptions.SnowflakeErrorMessages;
 import com.external.plugins.exceptions.SnowflakePluginError;
-import lombok.extern.slf4j.Slf4j;
-import net.snowflake.client.jdbc.SnowflakeReauthenticationRequest;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -16,6 +14,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import net.snowflake.client.jdbc.SnowflakeReauthenticationRequest;
 
 @Slf4j
 public class ExecutionUtils {
@@ -28,8 +28,8 @@ public class ExecutionUtils {
      * @throws AppsmithPluginException
      * @throws StaleConnectionException
      */
-    public static List<Map<String, Object>> getRowsFromQueryResult(Connection connection, String query) throws
-            AppsmithPluginException, StaleConnectionException {
+    public static List<Map<String, Object>> getRowsFromQueryResult(Connection connection, String query)
+            throws AppsmithPluginException, StaleConnectionException {
         List<Map<String, Object>> rowsList = new ArrayList<>();
         ResultSet resultSet = null;
         Statement statement = null;
@@ -61,7 +61,11 @@ public class ExecutionUtils {
                 throw new StaleConnectionException();
             }
             log.error("Exception caught when executing Snowflake query. Cause: ", e);
-            throw new AppsmithPluginException(SnowflakePluginError.QUERY_EXECUTION_FAILED, SnowflakeErrorMessages.QUERY_EXECUTION_FAILED_ERROR_MSG, e.getMessage(), "SQLSTATE: " + e.getSQLState() );
+            throw new AppsmithPluginException(
+                    SnowflakePluginError.QUERY_EXECUTION_FAILED,
+                    SnowflakeErrorMessages.QUERY_EXECUTION_FAILED_ERROR_MSG,
+                    e.getMessage(),
+                    "SQLSTATE: " + e.getSQLState());
 
         } finally {
             if (resultSet != null) {

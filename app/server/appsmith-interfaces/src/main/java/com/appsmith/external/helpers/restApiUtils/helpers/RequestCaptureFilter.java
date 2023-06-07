@@ -1,9 +1,21 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.external.helpers.restApiUtils.helpers;
+
+import static com.appsmith.external.constants.CommonFieldName.FILE_TYPE;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 import com.appsmith.external.models.ActionConfiguration;
 import com.appsmith.external.models.ActionExecutionRequest;
 import com.appsmith.external.models.Property;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import lombok.Getter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,18 +28,6 @@ import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeFunction;
 import reactor.core.publisher.Mono;
-
-import java.net.URI;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-
-import static com.appsmith.external.constants.CommonFieldName.FILE_TYPE;
-import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 /**
  * This filter captures the request that was sent out via WebClient so that the execution response can
@@ -45,13 +45,13 @@ public class RequestCaptureFilter implements ExchangeFilterFunction {
     }
 
     @Override
-    @NonNull
-    public Mono<ClientResponse> filter(@NonNull ClientRequest request, ExchangeFunction next) {
+    @NonNull public Mono<ClientResponse> filter(@NonNull ClientRequest request, ExchangeFunction next) {
         this.request = request;
         return next.exchange(request);
     }
 
-    public ActionExecutionRequest populateRequestFields(ActionExecutionRequest existing, boolean isBodySentWithApiRequest) {
+    public ActionExecutionRequest populateRequestFields(
+            ActionExecutionRequest existing, boolean isBodySentWithApiRequest) {
         final ActionExecutionRequest actionExecutionRequest = new ActionExecutionRequest();
 
         if (request == null) {
@@ -62,7 +62,8 @@ public class RequestCaptureFilter implements ExchangeFilterFunction {
 
         actionExecutionRequest.setUrl(request.url().toString());
         actionExecutionRequest.setHttpMethod(request.method());
-        MultiValueMap<String, String> headers = CollectionUtils.toMultiValueMap(new LinkedCaseInsensitiveMap<>(8, Locale.ENGLISH));
+        MultiValueMap<String, String> headers =
+                CollectionUtils.toMultiValueMap(new LinkedCaseInsensitiveMap<>(8, Locale.ENGLISH));
         AtomicBoolean isMultipart = new AtomicBoolean(false);
         request.headers().forEach((header, value) -> {
             if (HttpHeaders.AUTHORIZATION.equalsIgnoreCase(header) || "api_key".equalsIgnoreCase(header)) {
@@ -70,7 +71,8 @@ public class RequestCaptureFilter implements ExchangeFilterFunction {
             } else {
                 headers.addAll(header, value);
             }
-            if (HttpHeaders.CONTENT_TYPE.equalsIgnoreCase(header) && MULTIPART_FORM_DATA_VALUE.equalsIgnoreCase(value.get(0))) {
+            if (HttpHeaders.CONTENT_TYPE.equalsIgnoreCase(header)
+                    && MULTIPART_FORM_DATA_VALUE.equalsIgnoreCase(value.get(0))) {
                 isMultipart.set(true);
             }
         });
@@ -92,10 +94,11 @@ public class RequestCaptureFilter implements ExchangeFilterFunction {
         return actionExecutionRequest;
     }
 
-    public static ActionExecutionRequest populateRequestFields(ActionConfiguration actionConfiguration,
-                                                               URI uri,
-                                                               List<Map.Entry<String, String>> insertedParams,
-                                                               ObjectMapper objectMapper) {
+    public static ActionExecutionRequest populateRequestFields(
+            ActionConfiguration actionConfiguration,
+            URI uri,
+            List<Map.Entry<String, String>> insertedParams,
+            ObjectMapper objectMapper) {
 
         ActionExecutionRequest actionExecutionRequest = new ActionExecutionRequest();
 
@@ -108,15 +111,15 @@ public class RequestCaptureFilter implements ExchangeFilterFunction {
         AtomicReference<String> reqContentType = new AtomicReference<>();
 
         if (actionConfiguration.getHeaders() != null) {
-            MultiValueMap<String, String> reqMultiMap = CollectionUtils.toMultiValueMap(new LinkedCaseInsensitiveMap<>(8, Locale.ENGLISH));
+            MultiValueMap<String, String> reqMultiMap =
+                    CollectionUtils.toMultiValueMap(new LinkedCaseInsensitiveMap<>(8, Locale.ENGLISH));
 
-            actionConfiguration.getHeaders()
-                    .forEach(header -> {
-                        if (HttpHeaders.CONTENT_TYPE.equalsIgnoreCase(header.getKey())) {
-                            reqContentType.set((String) header.getValue());
-                        }
-                        reqMultiMap.put(header.getKey(), Arrays.asList((String) header.getValue()));
-                    });
+            actionConfiguration.getHeaders().forEach(header -> {
+                if (HttpHeaders.CONTENT_TYPE.equalsIgnoreCase(header.getKey())) {
+                    reqContentType.set((String) header.getValue());
+                }
+                reqMultiMap.put(header.getKey(), Arrays.asList((String) header.getValue()));
+            });
             actionExecutionRequest.setHeaders(objectMapper.valueToTree(reqMultiMap));
         }
 

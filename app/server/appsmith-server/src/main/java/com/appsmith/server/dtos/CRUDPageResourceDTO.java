@@ -1,11 +1,11 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.dtos;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.Map;
 import java.util.Set;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * This class will hold the fields that will be consumed by the server, which will be received

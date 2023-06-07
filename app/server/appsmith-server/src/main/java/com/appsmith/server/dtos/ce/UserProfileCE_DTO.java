@@ -1,9 +1,9 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.dtos.ce;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-
 import java.util.Set;
+import lombok.Data;
 
 @Data
 public class UserProfileCE_DTO {

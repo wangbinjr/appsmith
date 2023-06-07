@@ -1,4 +1,8 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.services;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 
 import com.appsmith.external.models.ActionConfiguration;
 import com.appsmith.external.models.ActionExecutionResult;
@@ -6,6 +10,8 @@ import com.appsmith.external.models.DatasourceConfiguration;
 import com.appsmith.external.plugins.PluginExecutor;
 import com.appsmith.server.exceptions.AppsmithError;
 import com.appsmith.server.exceptions.AppsmithException;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,12 +24,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -50,10 +50,10 @@ public class PluginServiceTest {
 
     @Test
     public void checkPluginExecutor() {
-        Mono<ActionExecutionResult> executeMono = pluginExecutor.execute(new Object(), new DatasourceConfiguration(), new ActionConfiguration());
+        Mono<ActionExecutionResult> executeMono =
+                pluginExecutor.execute(new Object(), new DatasourceConfiguration(), new ActionConfiguration());
 
-        StepVerifier
-                .create(executeMono)
+        StepVerifier.create(executeMono)
                 .assertNext(result -> {
                     assertThat(result).isInstanceOf(ActionExecutionResult.class);
                 })
@@ -75,12 +75,11 @@ public class PluginServiceTest {
 
         Mono<Map> formConfig = pluginService.getFormConfig("random-plugin-id");
 
-        StepVerifier.create(formConfig)
-                .expectError(AppsmithException.class)
-                .verify();
+        StepVerifier.create(formConfig).expectError(AppsmithException.class).verify();
     }
 
-    // The editor form config is not mandatory for plugins. The function should return successfully even if it's not present
+    // The editor form config is not mandatory for plugins. The function should return successfully even if it's not
+    // present
     @Test
     public void getPluginFormWithNullEditorConfig() {
         Map formMap = new HashMap();
@@ -106,7 +105,6 @@ public class PluginServiceTest {
                 })
                 .verifyComplete();
     }
-
 
     @Test
     public void getPluginFormValid() {

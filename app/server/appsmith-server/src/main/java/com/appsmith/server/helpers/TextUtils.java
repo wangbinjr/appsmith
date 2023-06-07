@@ -1,6 +1,5 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.helpers;
-
-import lombok.extern.slf4j.Slf4j;
 
 import java.text.Normalizer;
 import java.util.Arrays;
@@ -8,6 +7,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class TextUtils {

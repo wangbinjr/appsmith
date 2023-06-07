@@ -1,17 +1,16 @@
+/* Copyright 2019-2023 Appsmith */
 package com.external.config;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.appsmith.external.models.DatasourceConfiguration;
 import com.appsmith.external.models.OAuth2;
 import com.appsmith.external.models.Property;
 import com.external.utils.SheetsUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import org.junit.jupiter.api.Test;
 
 public class SheetsUtilTest {

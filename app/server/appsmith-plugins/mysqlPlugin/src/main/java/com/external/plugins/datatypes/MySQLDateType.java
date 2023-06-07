@@ -1,7 +1,7 @@
+/* Copyright 2019-2023 Appsmith */
 package com.external.plugins.datatypes;
 
 import com.appsmith.external.datatypes.DateType;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;

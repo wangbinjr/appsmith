@@ -1,19 +1,17 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.external.helpers.restApiUtils.helpers;
 
 import com.appsmith.external.models.AuthenticationDTO;
 import com.appsmith.external.models.OAuth2;
-import org.springframework.util.StringUtils;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.springframework.util.StringUtils;
 
 public class DatasourceValidator {
 
-    private static final String URL_REGEX =
-            "^https?://" +
-                    "(%[0-9A-Fa-f]{2}|[-()_.!~*';/?:@&=+$,A-Za-z0-9])+$";
+    private static final String URL_REGEX = "^https?://" + "(%[0-9A-Fa-f]{2}|[-()_.!~*';/?:@&=+$,A-Za-z0-9])+$";
 
     private static final Pattern URL_PATTERN = Pattern.compile(URL_REGEX);
 

@@ -1,11 +1,11 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.configurations.mongo;
 
+import java.util.Optional;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import org.springframework.data.mongodb.repository.support.ReactiveMongoRepositoryFactory;
 import org.springframework.data.repository.query.QueryLookupStrategy;
 import org.springframework.data.repository.query.QueryMethodEvaluationContextProvider;
-
-import java.util.Optional;
 
 /**
  * This custom factory returns our custom QueryLookupStrategy so that we can filter out deleted records
@@ -19,10 +19,9 @@ public class SoftDeleteMongoRepositoryFactory extends ReactiveMongoRepositoryFac
     }
 
     @Override
-    protected Optional<QueryLookupStrategy> getQueryLookupStrategy(QueryLookupStrategy.Key key,
-                                                                   QueryMethodEvaluationContextProvider evaluationContextProvider) {
-        Optional<QueryLookupStrategy> optStrategy = super.getQueryLookupStrategy(key,
-                evaluationContextProvider);
+    protected Optional<QueryLookupStrategy> getQueryLookupStrategy(
+            QueryLookupStrategy.Key key, QueryMethodEvaluationContextProvider evaluationContextProvider) {
+        Optional<QueryLookupStrategy> optStrategy = super.getQueryLookupStrategy(key, evaluationContextProvider);
         return optStrategy.map(this::createSoftDeleteQueryLookupStrategy);
     }
 

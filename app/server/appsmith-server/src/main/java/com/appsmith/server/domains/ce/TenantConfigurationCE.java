@@ -1,10 +1,10 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.domains.ce;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class TenantConfigurationCE {
@@ -27,5 +27,4 @@ public class TenantConfigurationCE {
         }
         thirdPartyAuths.add(auth);
     }
-
 }

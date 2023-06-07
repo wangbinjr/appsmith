@@ -1,4 +1,8 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.repositories.ce;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.appsmith.external.models.DatasourceStorageStructure;
 import com.appsmith.external.models.DatasourceStructure;
@@ -12,25 +16,22 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-
 @Component
-public class CustomDatasourceStructureRepositoryCEImpl
-        extends BaseAppsmithRepositoryImpl<DatasourceStorageStructure>
+public class CustomDatasourceStructureRepositoryCEImpl extends BaseAppsmithRepositoryImpl<DatasourceStorageStructure>
         implements CustomDatasourceStructureRepositoryCE {
-    public CustomDatasourceStructureRepositoryCEImpl(ReactiveMongoOperations mongoOperations,
-                                                     MongoConverter mongoConverter,
-                                                     CacheableRepositoryHelper cacheableRepositoryHelper) {
+    public CustomDatasourceStructureRepositoryCEImpl(
+            ReactiveMongoOperations mongoOperations,
+            MongoConverter mongoConverter,
+            CacheableRepositoryHelper cacheableRepositoryHelper) {
         super(mongoOperations, mongoConverter, cacheableRepositoryHelper);
     }
 
     @Override
     public Mono<UpdateResult> updateStructure(String datasourceId, DatasourceStructure structure) {
         return mongoOperations.upsert(
-                query(where(fieldName(QDatasourceStorageStructure.datasourceStorageStructure.datasourceId)).is(datasourceId)),
+                query(where(fieldName(QDatasourceStorageStructure.datasourceStorageStructure.datasourceId))
+                        .is(datasourceId)),
                 Update.update(fieldName(QDatasourceStorageStructure.datasourceStorageStructure.structure), structure),
-                DatasourceStorageStructure.class
-        );
+                DatasourceStorageStructure.class);
     }
 }

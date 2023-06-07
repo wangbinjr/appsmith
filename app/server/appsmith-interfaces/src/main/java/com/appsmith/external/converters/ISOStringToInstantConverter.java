@@ -1,3 +1,4 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.external.converters;
 
 import com.google.gson.JsonDeserializationContext;
@@ -8,23 +9,25 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-
 import java.lang.reflect.Type;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 public class ISOStringToInstantConverter implements JsonSerializer<Instant>, JsonDeserializer<Instant> {
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssX").withZone(ZoneOffset.UTC);
+    private final DateTimeFormatter formatter =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssX").withZone(ZoneOffset.UTC);
 
     @Override
-    public Instant deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+    public Instant deserialize(
+            JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
+            throws JsonParseException {
         if (jsonElement.isJsonNull()) {
             return null;
         }
         if (jsonElement.isJsonPrimitive()) {
             String jsonString = jsonElement.getAsJsonPrimitive().getAsString();
-            if (jsonString.length() == 0) {
+            if (jsonString.isEmpty()) {
                 return null;
             }
             try {

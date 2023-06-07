@@ -1,3 +1,4 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.external.converters;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -12,14 +13,15 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import org.springframework.http.HttpMethod;
-
 import java.io.IOException;
 import java.lang.reflect.Type;
+import org.springframework.http.HttpMethod;
 
 public class HttpMethodConverter implements JsonSerializer<HttpMethod>, JsonDeserializer<HttpMethod> {
     @Override
-    public HttpMethod deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+    public HttpMethod deserialize(
+            JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
+            throws JsonParseException {
         return HttpMethod.valueOf(jsonElement.getAsString());
     }
 
@@ -37,7 +39,8 @@ public class HttpMethodConverter implements JsonSerializer<HttpMethod>, JsonDese
 
     public static class HttpMethodSerializer extends com.fasterxml.jackson.databind.JsonSerializer<HttpMethod> {
         @Override
-        public void serialize(HttpMethod httpMethod, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+        public void serialize(HttpMethod httpMethod, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+                throws IOException {
             jsonGenerator.writeString(httpMethod.name());
         }
     }
@@ -45,7 +48,8 @@ public class HttpMethodConverter implements JsonSerializer<HttpMethod>, JsonDese
     public static class HttpMethodDeserializer extends com.fasterxml.jackson.databind.JsonDeserializer<HttpMethod> {
 
         @Override
-        public HttpMethod deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+        public HttpMethod deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+                throws IOException {
             return HttpMethod.valueOf(deserializationContext.readValue(jsonParser, String.class));
         }
     }

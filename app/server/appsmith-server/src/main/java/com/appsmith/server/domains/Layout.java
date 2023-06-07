@@ -1,4 +1,7 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.domains;
+
+import static java.lang.Boolean.TRUE;
 
 import com.appsmith.external.exceptions.ErrorDTO;
 import com.appsmith.external.models.BaseDomain;
@@ -8,17 +11,14 @@ import com.appsmith.server.helpers.CollectionUtils;
 import com.appsmith.server.helpers.CompareDslActionDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import net.minidev.json.JSONObject;
-
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
-import static java.lang.Boolean.TRUE;
 
 @Getter
 @Setter
@@ -51,7 +51,8 @@ public class Layout extends BaseDomain {
         return super.getId();
     }
 
-    // this attribute will be used to display errors caused white calculating allOnLoadAction PageLoadActionsUtilCEImpl.java
+    // this attribute will be used to display errors caused white calculating allOnLoadAction
+    // PageLoadActionsUtilCEImpl.java
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonView({Views.Public.class, Views.Export.class})
     List<ErrorDTO> layoutOnLoadActionErrors;

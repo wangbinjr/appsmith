@@ -1,3 +1,4 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.external.datatypes;
 
 import com.appsmith.external.constants.DataType;
@@ -5,13 +6,12 @@ import com.appsmith.external.exceptions.pluginExceptions.AppsmithPluginError;
 import com.appsmith.external.exceptions.pluginExceptions.AppsmithPluginException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import reactor.core.Exceptions;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
+import reactor.core.Exceptions;
 
 public class DateType implements AppsmithType {
 
@@ -39,12 +39,7 @@ public class DateType implements AppsmithType {
             return Matcher.quoteReplacement(valueAsString);
         } catch (JsonProcessingException e) {
             throw Exceptions.propagate(
-                    new AppsmithPluginException(
-                            AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR,
-                            s,
-                            e.getMessage()
-                    )
-            );
+                    new AppsmithPluginException(AppsmithPluginError.PLUGIN_EXECUTE_ARGUMENT_ERROR, s, e.getMessage()));
         }
     }
 

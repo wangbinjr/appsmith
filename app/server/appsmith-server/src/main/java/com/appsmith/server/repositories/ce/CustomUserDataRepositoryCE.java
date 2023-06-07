@@ -1,12 +1,12 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.repositories.ce;
 
 import com.appsmith.server.domains.UserData;
 import com.appsmith.server.repositories.AppsmithRepository;
 import com.mongodb.client.result.UpdateResult;
+import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 public interface CustomUserDataRepositoryCE extends AppsmithRepository<UserData> {
 
@@ -17,5 +17,4 @@ public interface CustomUserDataRepositoryCE extends AppsmithRepository<UserData>
     Flux<UserData> findPhotoAssetsByUserIds(Iterable<String> userId);
 
     Mono<String> fetchMostRecentlyUsedWorkspaceId(String userId);
-
 }

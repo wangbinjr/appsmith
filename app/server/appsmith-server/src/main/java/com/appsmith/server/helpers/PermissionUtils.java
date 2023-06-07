@@ -1,7 +1,7 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.helpers;
 
 import com.appsmith.server.dtos.Permission;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;

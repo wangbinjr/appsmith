@@ -1,14 +1,14 @@
+/* Copyright 2019-2023 Appsmith */
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.appsmith.git.converters.GsonUnorderedToOrderedConverter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class GsonUnorderedToOrderedSerializationTest {
     private Gson gson;

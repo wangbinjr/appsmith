@@ -1,14 +1,5 @@
+/* Copyright 2019-2023 Appsmith */
 package com.external.plugins.utils;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.appsmith.external.constants.DataType.BOOLEAN;
 import static com.appsmith.external.constants.DataType.DOUBLE;
@@ -27,6 +18,16 @@ import static com.external.plugins.utils.PostgresDataTypeUtils.DataType.TEXT;
 import static com.external.plugins.utils.PostgresDataTypeUtils.DataType.TIME;
 import static com.external.plugins.utils.PostgresDataTypeUtils.DataType.VARCHAR;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class PostgresDataTypeUtils {
 
     /**
@@ -38,6 +39,7 @@ public class PostgresDataTypeUtils {
      * and ignoring the group "::" from getting captured by using regex "?:" which ignores the subsequent string
      */
     private static String questionWithCast = "\\?(?:::)*([a-zA-Z]+)*";
+
     private static Pattern questionWithCastPattern = Pattern.compile(questionWithCast);
 
     public static DataType dataType = new DataType();
@@ -52,6 +54,7 @@ public class PostgresDataTypeUtils {
          * dataTypeMapper which maps the postgres data types to Appsmith data types.
          */
         public static final String INT8 = "int8";
+
         public static final String INT4 = "int4";
         public static final String DECIMAL = "decimal";
         public static final String VARCHAR = "varchar";
@@ -106,7 +109,7 @@ public class PostgresDataTypeUtils {
             dataTypeMapper.put(INT, INTEGER);
 
             // Must ensure that all the declared postgres data types have a mapping to appsmith data types
-            assert(dataTypeMapper.size() == dataType.getDataTypes().size());
+            assert (dataTypeMapper.size() == dataType.getDataTypes().size());
         }
 
         return dataTypeMapper;
@@ -122,13 +125,15 @@ public class PostgresDataTypeUtils {
             if (prospectiveDataType != null) {
                 String dataTypeFromInput = prospectiveDataType.trim().toLowerCase();
                 if (dataType.getDataTypes().contains(dataTypeFromInput)) {
-                    com.appsmith.external.constants.DataType appsmithDataType
-                            = (com.appsmith.external.constants.DataType) getDataTypeMapper().get(dataTypeFromInput);
+                    com.appsmith.external.constants.DataType appsmithDataType =
+                            (com.appsmith.external.constants.DataType)
+                                    getDataTypeMapper().get(dataTypeFromInput);
                     inputDataTypes.add(appsmithDataType);
                     continue;
                 }
             }
-            // Either no external casting exists or unsupported data type is being used. Do not use external casting for this
+            // Either no external casting exists or unsupported data type is being used. Do not use external casting for
+            // this
             // and instead default to implicit type casting (default behaviour) by setting the entry to null.
             inputDataTypes.add(null);
         }

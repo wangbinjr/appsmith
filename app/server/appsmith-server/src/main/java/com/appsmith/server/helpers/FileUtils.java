@@ -1,14 +1,14 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.helpers;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.springframework.stereotype.Component;
 
 @Component
 public class FileUtils {

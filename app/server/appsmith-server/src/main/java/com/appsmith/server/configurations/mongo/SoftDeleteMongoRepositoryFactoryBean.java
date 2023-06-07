@@ -1,11 +1,11 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.configurations.mongo;
 
+import java.io.Serializable;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import org.springframework.data.mongodb.repository.support.ReactiveMongoRepositoryFactoryBean;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
-
-import java.io.Serializable;
 
 /**
  * This factory bean class is set in the annotation @EnableReactiveMongoRepositories in {@link com.appsmith.server.configurations.CommonConfig}

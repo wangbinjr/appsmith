@@ -1,12 +1,12 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.solutions.ce;
 
 import com.appsmith.server.dtos.LayoutDTO;
 import com.appsmith.server.dtos.RefactorActionNameDTO;
 import com.appsmith.server.dtos.RefactorNameDTO;
+import java.util.Set;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
-
-import java.util.Set;
 
 public interface RefactoringSolutionCE {
 
@@ -18,7 +18,8 @@ public interface RefactoringSolutionCE {
 
     Mono<LayoutDTO> refactorActionName(RefactorActionNameDTO refactorActionNameDTO, String branchName);
 
-    Mono<LayoutDTO> refactorActionCollectionName(String appId, String pageId, String layoutId, String oldName, String newName);
+    Mono<LayoutDTO> refactorActionCollectionName(
+            String appId, String pageId, String layoutId, String oldName, String newName);
 
     /**
      * This method is responsible for the core logic of refactoring a valid name inside an Appsmith page.

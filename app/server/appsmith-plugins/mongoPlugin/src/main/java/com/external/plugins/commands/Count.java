@@ -1,18 +1,5 @@
+/* Copyright 2019-2023 Appsmith */
 package com.external.plugins.commands;
-
-import com.appsmith.external.helpers.PluginUtils;
-import com.appsmith.external.models.ActionConfiguration;
-import com.appsmith.external.models.DatasourceStructure;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.bson.Document;
-import org.pf4j.util.StringUtils;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static com.appsmith.external.helpers.PluginUtils.STRING_TYPE;
 import static com.appsmith.external.helpers.PluginUtils.setDataValueSafelyInFormData;
@@ -25,6 +12,19 @@ import static com.external.plugins.constants.FieldName.COUNT_QUERY;
 import static com.external.plugins.constants.FieldName.SMART_SUBSTITUTION;
 import static com.external.plugins.utils.MongoPluginUtils.parseSafely;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+
+import com.appsmith.external.helpers.PluginUtils;
+import com.appsmith.external.models.ActionConfiguration;
+import com.appsmith.external.models.DatasourceStructure;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.bson.Document;
+import org.pf4j.util.StringUtils;
 
 @Getter
 @Setter
@@ -100,16 +100,11 @@ public class Count extends MongoCommand {
         setDataValueSafelyInFormData(configMap, COUNT_QUERY, "{\"_id\": {\"$exists\": true}}");
         setDataValueSafelyInFormData(configMap, COLLECTION, collectionName);
 
-        String rawQuery = "{\n" +
-                "  \"count\": \"" + collectionName + "\",\n" +
-                "  \"query\": " + "{\"_id\": {\"$exists\": true}} \n" +
-                "}\n";
+        String rawQuery = "{\n" + "  \"count\": \""
+                + collectionName + "\",\n" + "  \"query\": "
+                + "{\"_id\": {\"$exists\": true}} \n" + "}\n";
         setDataValueSafelyInFormData(configMap, BODY, rawQuery);
 
-        return Collections.singletonList(new DatasourceStructure.Template(
-                "Count",
-                null,
-                configMap
-        ));
+        return Collections.singletonList(new DatasourceStructure.Template("Count", null, configMap));
     }
 }

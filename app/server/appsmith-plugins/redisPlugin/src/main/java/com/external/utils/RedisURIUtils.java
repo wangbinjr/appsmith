@@ -1,13 +1,13 @@
+/* Copyright 2019-2023 Appsmith */
 package com.external.utils;
 
 import com.appsmith.external.models.DBAuth;
 import com.appsmith.external.models.DatasourceConfiguration;
 import com.appsmith.external.models.Endpoint;
-import org.apache.commons.lang.ObjectUtils;
-import org.pf4j.util.StringUtils;
-
 import java.net.URI;
 import java.net.URISyntaxException;
+import org.apache.commons.lang.ObjectUtils;
+import org.pf4j.util.StringUtils;
 
 public class RedisURIUtils {
     private static final Long DEFAULT_PORT = 6379L;

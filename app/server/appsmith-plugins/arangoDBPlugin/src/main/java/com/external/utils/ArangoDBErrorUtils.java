@@ -1,15 +1,15 @@
+/* Copyright 2019-2023 Appsmith */
 package com.external.utils;
+
+import static com.external.plugins.exceptions.ArangoDBErrorMessages.DS_HOSTNAME_MISSING_OR_INVALID_ERROR_MSG;
 
 import com.appsmith.external.exceptions.pluginExceptions.AppsmithPluginException;
 import com.appsmith.external.plugins.AppsmithPluginErrorUtils;
 import com.arangodb.ArangoDBException;
+import java.util.Arrays;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.util.CollectionUtils;
-
-import java.util.Arrays;
-
-import static com.external.plugins.exceptions.ArangoDBErrorMessages.DS_HOSTNAME_MISSING_OR_INVALID_ERROR_MSG;
 
 /**
  * This class is meant to provide helpful methods to re-format the error messages received from remote ArangoDB
@@ -67,5 +67,4 @@ public class ArangoDBErrorUtils extends AppsmithPluginErrorUtils {
          */
         return CollectionUtils.lastElement(Arrays.asList(error.getMessage().split(":")));
     }
-
 }

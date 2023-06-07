@@ -1,20 +1,20 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.acl.ce;
+
+import static com.appsmith.server.acl.AppsmithRole.ORGANIZATION_ADMIN;
+import static com.appsmith.server.acl.AppsmithRole.ORGANIZATION_DEVELOPER;
+import static com.appsmith.server.acl.AppsmithRole.ORGANIZATION_VIEWER;
 
 import com.appsmith.server.acl.AppsmithRole;
 import jakarta.annotation.PostConstruct;
+import java.util.EnumSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedMultigraph;
 import org.jgrapht.traverse.BreadthFirstIterator;
-
-import java.util.EnumSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-import static com.appsmith.server.acl.AppsmithRole.ORGANIZATION_ADMIN;
-import static com.appsmith.server.acl.AppsmithRole.ORGANIZATION_DEVELOPER;
-import static com.appsmith.server.acl.AppsmithRole.ORGANIZATION_VIEWER;
 
 @Slf4j
 public class RoleGraphCE {
@@ -27,10 +27,9 @@ public class RoleGraphCE {
     public void createPolicyGraph() {
 
         // Initialization of the hierarchical and lateral graphs by adding all the vertices
-        EnumSet.allOf(AppsmithRole.class)
-                .forEach(role -> {
-                    hierarchyGraph.addVertex(role);
-                });
+        EnumSet.allOf(AppsmithRole.class).forEach(role -> {
+            hierarchyGraph.addVertex(role);
+        });
 
         hierarchyGraph.addEdge(ORGANIZATION_ADMIN, ORGANIZATION_DEVELOPER);
         hierarchyGraph.addEdge(ORGANIZATION_DEVELOPER, ORGANIZATION_VIEWER);
@@ -41,7 +40,8 @@ public class RoleGraphCE {
 
         Set<AppsmithRole> childrenRoles = new LinkedHashSet<>();
         childrenRoles.add(role);
-        BreadthFirstIterator<AppsmithRole, DefaultEdge> breadthFirstIterator = new BreadthFirstIterator<>(hierarchyGraph, role);
+        BreadthFirstIterator<AppsmithRole, DefaultEdge> breadthFirstIterator =
+                new BreadthFirstIterator<>(hierarchyGraph, role);
         while (breadthFirstIterator.hasNext()) {
             childrenRoles.add(breadthFirstIterator.next());
         }

@@ -1,17 +1,17 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.featureflags.strategies;
 
 import com.appsmith.server.constants.FieldName;
 import com.appsmith.server.domains.User;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.ff4j.core.FeatureStore;
 import org.ff4j.core.FlippingExecutionContext;
 import org.ff4j.strategy.AbstractFlipStrategy;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 public class EmailBasedRolloutStrategy extends AbstractFlipStrategy {
@@ -29,7 +29,8 @@ public class EmailBasedRolloutStrategy extends AbstractFlipStrategy {
     public void init(String featureName, Map<String, String> initParam) {
         super.init(featureName, initParam);
         if (!initParam.containsKey(PARAM_EMAIL_DOMAINS) && !initParam.containsKey(PARAM_EMAILS)) {
-            String msg = String.format("Either '%s' or '%s' is required for EmailBasedRolloutStrategy", PARAM_EMAIL_DOMAINS, PARAM_EMAILS);
+            String msg = String.format(
+                    "Either '%s' or '%s' is required for EmailBasedRolloutStrategy", PARAM_EMAIL_DOMAINS, PARAM_EMAILS);
             throw new IllegalArgumentException(msg);
         }
         if (!StringUtils.isEmpty(initParam.get(PARAM_EMAIL_DOMAINS))) {
@@ -58,6 +59,5 @@ public class EmailBasedRolloutStrategy extends AbstractFlipStrategy {
             }
         }
         return false;
-
     }
 }

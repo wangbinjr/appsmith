@@ -1,12 +1,12 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.helpers;
 
 import com.appsmith.server.constants.FieldName;
-import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONObject;
 
 @Slf4j
 public class WidgetSpecificUtils {
@@ -68,5 +68,4 @@ public class WidgetSpecificUtils {
         }
         return dsl;
     }
-
 }

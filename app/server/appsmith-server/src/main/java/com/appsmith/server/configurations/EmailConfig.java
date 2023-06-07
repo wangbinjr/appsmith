@@ -1,6 +1,8 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.configurations;
 
 import jakarta.mail.internet.InternetAddress;
+import java.io.UnsupportedEncodingException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
-
-import java.io.UnsupportedEncodingException;
 
 @Getter
 @Setter
@@ -53,5 +53,4 @@ public class EmailConfig {
             }
         }
     }
-
 }

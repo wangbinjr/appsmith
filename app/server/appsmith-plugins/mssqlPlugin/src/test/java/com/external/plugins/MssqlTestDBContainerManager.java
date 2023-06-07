@@ -1,19 +1,19 @@
+/* Copyright 2019-2023 Appsmith */
 package com.external.plugins;
+
+import static com.external.plugins.utils.MssqlDatasourceUtils.getConnectionFromConnectionPool;
+import static com.external.plugins.utils.MssqlExecuteUtils.closeConnectionPostExecution;
 
 import com.appsmith.external.models.DBAuth;
 import com.appsmith.external.models.DatasourceConfiguration;
 import com.appsmith.external.models.Endpoint;
 import com.appsmith.external.models.SSLDetails;
 import com.zaxxer.hikari.HikariDataSource;
-import org.testcontainers.containers.MSSQLServerContainer;
-import org.testcontainers.utility.DockerImageName;
-
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-
-import static com.external.plugins.utils.MssqlDatasourceUtils.getConnectionFromConnectionPool;
-import static com.external.plugins.utils.MssqlExecuteUtils.closeConnectionPostExecution;
+import org.testcontainers.containers.MSSQLServerContainer;
+import org.testcontainers.utility.DockerImageName;
 
 public class MssqlTestDBContainerManager {
 
@@ -21,8 +21,8 @@ public class MssqlTestDBContainerManager {
 
     @SuppressWarnings("rawtypes")
     public static MSSQLServerContainer getMssqlDBForTest() {
-        return new MSSQLServerContainer<>(
-                DockerImageName.parse("mcr.microsoft.com/azure-sql-edge:1.0.3").asCompatibleSubstituteFor("mcr.microsoft.com/mssql/server:2017-latest"))
+        return new MSSQLServerContainer<>(DockerImageName.parse("mcr.microsoft.com/azure-sql-edge:1.0.3")
+                        .asCompatibleSubstituteFor("mcr.microsoft.com/mssql/server:2017-latest"))
                 .acceptLicense()
                 .withExposedPorts(1433)
                 .withPassword("Mssql123");

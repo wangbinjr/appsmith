@@ -1,7 +1,14 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.authentication.handlers.ce;
+
+import static com.appsmith.server.helpers.RedirectHelper.REDIRECT_URL_QUERY_PARAM;
 
 import com.appsmith.server.constants.Security;
 import com.appsmith.server.exceptions.AppsmithError;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -14,13 +21,6 @@ import org.springframework.security.web.server.authentication.ServerAuthenticati
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-
-import static com.appsmith.server.helpers.RedirectHelper.REDIRECT_URL_QUERY_PARAM;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -46,7 +46,9 @@ public class AuthenticationFailureHandlerCE implements ServerAuthenticationFailu
             String[] stateArray = state.split(",");
             for (int i = 0; i < stateArray.length; i++) {
                 String stateVar = stateArray[i];
-                if (stateVar != null && stateVar.startsWith(Security.STATE_PARAMETER_ORIGIN) && stateVar.contains("=")) {
+                if (stateVar != null
+                        && stateVar.startsWith(Security.STATE_PARAMETER_ORIGIN)
+                        && stateVar.contains("=")) {
                     // This is the origin of the request that we want to redirect to
                     originHeader = stateVar.split("=")[1];
                 }
@@ -76,11 +78,17 @@ public class AuthenticationFailureHandlerCE implements ServerAuthenticationFailu
         URI defaultRedirectLocation;
         String url = "";
         if (exception instanceof OAuth2AuthenticationException
-                && AppsmithError.SIGNUP_DISABLED.getAppErrorCode().toString().equals(((OAuth2AuthenticationException) exception).getError().getErrorCode())) {
+                && AppsmithError.SIGNUP_DISABLED
+                        .getAppErrorCode()
+                        .toString()
+                        .equals(((OAuth2AuthenticationException) exception)
+                                .getError()
+                                .getErrorCode())) {
             url = "/user/signup?error=" + URLEncoder.encode(exception.getMessage(), StandardCharsets.UTF_8);
         } else {
             if (exception instanceof InternalAuthenticationServiceException) {
-                url = originHeader + "/user/login?error=true&message=" + URLEncoder.encode(exception.getMessage(), StandardCharsets.UTF_8);
+                url = originHeader + "/user/login?error=true&message="
+                        + URLEncoder.encode(exception.getMessage(), StandardCharsets.UTF_8);
             } else {
                 url = originHeader + "/user/login?error=true";
             }
@@ -91,5 +99,4 @@ public class AuthenticationFailureHandlerCE implements ServerAuthenticationFailu
         defaultRedirectLocation = URI.create(url);
         return this.redirectStrategy.sendRedirect(exchange, defaultRedirectLocation);
     }
-
 }

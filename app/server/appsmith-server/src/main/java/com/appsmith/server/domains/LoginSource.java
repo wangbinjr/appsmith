@@ -1,13 +1,17 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.domains;
 
 import com.appsmith.server.helpers.EnumUtils;
-
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum LoginSource {
-    GOOGLE, FORM, GITHUB, KEYCLOAK, OIDC;
+    GOOGLE,
+    FORM,
+    GITHUB,
+    KEYCLOAK,
+    OIDC;
 
     public static final Set<LoginSource> oauthSources = Set.of(GOOGLE, GITHUB, KEYCLOAK, OIDC);
 

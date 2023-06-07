@@ -1,14 +1,14 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.helpers;
 
-import com.appsmith.server.dtos.DslActionDTO;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import com.appsmith.server.dtos.DslActionDTO;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 public class CompareDslActionDTOTest {
 

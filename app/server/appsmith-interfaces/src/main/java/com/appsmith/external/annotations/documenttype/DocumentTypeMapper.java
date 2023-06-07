@@ -1,12 +1,5 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.external.annotations.documenttype;
-
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.data.convert.TypeInformationMapper;
-import org.springframework.data.mapping.Alias;
-import org.springframework.data.util.ClassTypeInformation;
-import org.springframework.data.util.TypeInformation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +7,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.data.convert.TypeInformationMapper;
+import org.springframework.data.mapping.Alias;
+import org.springframework.data.util.ClassTypeInformation;
+import org.springframework.data.util.TypeInformation;
 
 /**
  * This {@link TypeInformationMapper} implementation makes use of the {@link DocumentType} annotation to register all
@@ -50,7 +50,8 @@ public class DocumentTypeMapper implements TypeInformationMapper {
                     typeToAliasMap.put(type, alias);
 
                 } catch (ClassNotFoundException e) {
-                    throw new IllegalStateException(String.format("Class [%s] could not be loaded.", bd.getBeanClassName()), e);
+                    throw new IllegalStateException(
+                            String.format("Class [%s] could not be loaded.", bd.getBeanClassName()), e);
                 }
             }
         }
@@ -90,7 +91,7 @@ public class DocumentTypeMapper implements TypeInformationMapper {
             return this;
         }
 
-        public Builder withBasePackages(Collection< ? extends String> basePackages) {
+        public Builder withBasePackages(Collection<? extends String> basePackages) {
             basePackagesToScan.addAll(basePackages);
             return this;
         }

@@ -1,10 +1,10 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.external.annotations.encryption;
 
+import java.lang.reflect.Field;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.lang.reflect.Field;
 
 @Getter
 @Setter

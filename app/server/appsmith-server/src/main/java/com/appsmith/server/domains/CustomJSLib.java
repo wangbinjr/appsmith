@@ -1,18 +1,18 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.domains;
 
 import com.appsmith.external.models.BranchAwareDomain;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -49,9 +49,13 @@ public class CustomJSLib extends BranchAwareDomain {
     String defs;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public CustomJSLib(@JsonProperty("name") String name, @JsonProperty("accessor") Set<String> accessor,
-                       @JsonProperty("url") String url, @JsonProperty("docsUrl") String docsUrl,
-                       @JsonProperty("version") String version, @JsonProperty("defs") String defs) {
+    public CustomJSLib(
+            @JsonProperty("name") String name,
+            @JsonProperty("accessor") Set<String> accessor,
+            @JsonProperty("url") String url,
+            @JsonProperty("docsUrl") String docsUrl,
+            @JsonProperty("version") String version,
+            @JsonProperty("defs") String defs) {
         this.name = name;
         this.accessor = accessor;
         this.url = url;

@@ -1,11 +1,11 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.external.git;
 
 import com.appsmith.external.models.ApplicationGitReference;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import reactor.core.publisher.Mono;
-
 import java.io.IOException;
 import java.nio.file.Path;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import reactor.core.publisher.Mono;
 
 public interface FileInterface {
     /**
@@ -28,9 +28,9 @@ public interface FileInterface {
      *       --page1
      *       --page2
      */
-    Mono<Path> saveApplicationToGitRepo(Path baseRepoSuffix,
-                                        ApplicationGitReference applicationGitReference,
-                                        String branchName) throws IOException, GitAPIException;
+    Mono<Path> saveApplicationToGitRepo(
+            Path baseRepoSuffix, ApplicationGitReference applicationGitReference, String branchName)
+            throws IOException, GitAPIException;
 
     /**
      * This method will reconstruct the application from the repo
@@ -41,10 +41,8 @@ public interface FileInterface {
      * @param repoName git repo name to access file system
      * @return application reference from which entire application can be rehydrated
      */
-    Mono<ApplicationGitReference> reconstructApplicationReferenceFromGitRepo(String organisationId,
-                                                                             String defaultApplicationId,
-                                                                             String repoName,
-                                                                             String branchName);
+    Mono<ApplicationGitReference> reconstructApplicationReferenceFromGitRepo(
+            String organisationId, String defaultApplicationId, String repoName, String branchName);
 
     /**
      * Once the user connects the existing application to a remote repo, we will initialize the repo with Readme.md -

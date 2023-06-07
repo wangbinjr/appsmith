@@ -1,4 +1,7 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.services;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.appsmith.server.acl.AclPermission;
 import com.appsmith.server.domains.Application;
@@ -6,6 +9,9 @@ import com.appsmith.server.domains.Workspace;
 import com.appsmith.server.dtos.PageDTO;
 import com.appsmith.server.repositories.ApplicationRepository;
 import com.appsmith.server.repositories.UserRepository;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,12 +22,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -49,7 +49,8 @@ public class ApplicationPageServiceTest {
     private Mono<PageDTO> createPageMono(String uniquePrefix) {
         Workspace unsavedWorkspace = new Workspace();
         unsavedWorkspace.setName(uniquePrefix + "_org");
-        return workspaceService.create(unsavedWorkspace)
+        return workspaceService
+                .create(unsavedWorkspace)
                 .flatMap(workspace -> {
                     Application application = new Application();
                     application.setName(uniquePrefix + "_app");
@@ -70,16 +71,19 @@ public class ApplicationPageServiceTest {
                 .flatMap(pageDTO -> {
                     Application application = new Application();
                     application.setLastEditedAt(Instant.now().minus(10, ChronoUnit.DAYS));
-                    return applicationRepository.updateById(pageDTO.getApplicationId(), application, AclPermission.MANAGE_APPLICATIONS)
+                    return applicationRepository
+                            .updateById(pageDTO.getApplicationId(), application, AclPermission.MANAGE_APPLICATIONS)
                             .then(applicationPageService.deleteUnpublishedPage(pageDTO.getId()))
                             .then(applicationRepository.findById(pageDTO.getApplicationId()));
                 });
 
-        StepVerifier.create(applicationMono).assertNext(application -> {
-            assertThat(application.getLastEditedAt()).isNotNull();
-            Instant yesterday = Instant.now().minus(1, ChronoUnit.DAYS);
-            assertThat(application.getLastEditedAt()).isAfter(yesterday);
-        }).verifyComplete();
+        StepVerifier.create(applicationMono)
+                .assertNext(application -> {
+                    assertThat(application.getLastEditedAt()).isNotNull();
+                    Instant yesterday = Instant.now().minus(1, ChronoUnit.DAYS);
+                    assertThat(application.getLastEditedAt()).isAfter(yesterday);
+                })
+                .verifyComplete();
     }
 
     @Test
@@ -88,8 +92,11 @@ public class ApplicationPageServiceTest {
         Mono<Application> applicationMono = createPageMono(UUID.randomUUID().toString())
                 .flatMap(pageDTO -> applicationPageService.cloneApplication(pageDTO.getApplicationId(), null));
 
-        StepVerifier.create(applicationMono).assertNext(application -> {
-            assertThat(application.getPages().size()).isEqualTo(application.getPublishedPages().size());
-        }).verifyComplete();
+        StepVerifier.create(applicationMono)
+                .assertNext(application -> {
+                    assertThat(application.getPages().size())
+                            .isEqualTo(application.getPublishedPages().size());
+                })
+                .verifyComplete();
     }
 }

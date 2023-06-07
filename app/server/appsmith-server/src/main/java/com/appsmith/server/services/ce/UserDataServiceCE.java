@@ -1,14 +1,14 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.services.ce;
 
 import com.appsmith.server.domains.Application;
 import com.appsmith.server.domains.User;
 import com.appsmith.server.domains.UserData;
 import com.mongodb.client.result.UpdateResult;
+import java.util.Map;
 import org.springframework.http.codec.multipart.Part;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
-import java.util.Map;
 
 public interface UserDataServiceCE {
 

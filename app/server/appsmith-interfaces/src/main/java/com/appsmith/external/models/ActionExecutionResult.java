@@ -1,3 +1,4 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.external.models;
 
 import com.appsmith.external.exceptions.BaseException;
@@ -5,14 +6,13 @@ import com.appsmith.external.exceptions.pluginExceptions.AppsmithPluginException
 import com.appsmith.external.helpers.ExceptionHelper;
 import com.appsmith.external.plugins.AppsmithPluginErrorUtils;
 import com.fasterxml.jackson.databind.JsonNode;
+import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.util.StringUtils;
-
-import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -39,7 +39,6 @@ public class ActionExecutionResult {
     List<ParsedDataType> dataTypes;
 
     List<WidgetSuggestionDTO> suggestedWidgets;
-
 
     PluginErrorDetails pluginErrorDetails;
 

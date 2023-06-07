@@ -1,18 +1,5 @@
+/* Copyright 2019-2023 Appsmith */
 package com.external.plugins.commands;
-
-import com.appsmith.external.helpers.PluginUtils;
-import com.appsmith.external.models.ActionConfiguration;
-import com.appsmith.external.models.DatasourceStructure;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.bson.Document;
-import org.pf4j.util.StringUtils;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static com.appsmith.external.helpers.PluginUtils.STRING_TYPE;
 import static com.appsmith.external.helpers.PluginUtils.setDataValueSafelyInFormData;
@@ -26,6 +13,19 @@ import static com.external.plugins.constants.FieldName.DISTINCT_QUERY;
 import static com.external.plugins.constants.FieldName.SMART_SUBSTITUTION;
 import static com.external.plugins.utils.MongoPluginUtils.parseSafely;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+
+import com.appsmith.external.helpers.PluginUtils;
+import com.appsmith.external.models.ActionConfiguration;
+import com.appsmith.external.models.DatasourceStructure;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.bson.Document;
+import org.pf4j.util.StringUtils;
 
 @Getter
 @Setter
@@ -118,21 +118,17 @@ public class Distinct extends MongoCommand {
 
         setDataValueSafelyInFormData(configMap, SMART_SUBSTITUTION, Boolean.TRUE);
         setDataValueSafelyInFormData(configMap, COMMAND, "DISTINCT");
-        setDataValueSafelyInFormData(configMap, DISTINCT_QUERY, "{ \"_id\": ObjectId(\"id_of_document_to_distinct\") }");
+        setDataValueSafelyInFormData(
+                configMap, DISTINCT_QUERY, "{ \"_id\": ObjectId(\"id_of_document_to_distinct\") }");
         setDataValueSafelyInFormData(configMap, DISTINCT_KEY, "_id");
         setDataValueSafelyInFormData(configMap, COLLECTION, collectionName);
 
-        String rawQuery = "{\n" +
-                "  \"distinct\": \"" + collectionName + "\",\n" +
-                "  \"query\": { \"_id\": ObjectId(\"id_of_document_to_distinct\") }," +
-                "  \"key\": \"_id\"," +
-                "}\n";
+        String rawQuery = "{\n" + "  \"distinct\": \""
+                + collectionName + "\",\n" + "  \"query\": { \"_id\": ObjectId(\"id_of_document_to_distinct\") },"
+                + "  \"key\": \"_id\","
+                + "}\n";
         setDataValueSafelyInFormData(configMap, BODY, rawQuery);
 
-        return Collections.singletonList(new DatasourceStructure.Template(
-                "Distinct",
-                null,
-                configMap
-        ));
+        return Collections.singletonList(new DatasourceStructure.Template("Distinct", null, configMap));
     }
 }

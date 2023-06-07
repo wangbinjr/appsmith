@@ -1,4 +1,8 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.services;
+
+import static com.appsmith.server.constants.FieldName.ADMINISTRATOR;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.appsmith.server.configurations.WithMockAppsmithUser;
 import com.appsmith.server.domains.LoginSource;
@@ -8,6 +12,7 @@ import com.appsmith.server.exceptions.AppsmithException;
 import com.appsmith.server.repositories.PermissionGroupRepository;
 import com.appsmith.server.repositories.UserRepository;
 import com.appsmith.server.repositories.WorkspaceRepository;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,11 +23,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import java.util.Set;
-
-import static com.appsmith.server.constants.FieldName.ADMINISTRATOR;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @ExtendWith(SpringExtension.class)
@@ -82,8 +82,7 @@ public class UserServiceWithDisabledSignupTest {
 
         Mono<User> userMono = userService.create(newUser).cache();
 
-        Mono<Set<String>> assignedToUsersMono = userMono
-                .flatMap(user -> {
+        Mono<Set<String>> assignedToUsersMono = userMono.flatMap(user -> {
                     String workspaceName = user.computeFirstName() + "'s apps";
                     return workspaceRepository.findByName(workspaceName);
                 })
@@ -115,8 +114,7 @@ public class UserServiceWithDisabledSignupTest {
 
         Mono<User> userMono = userService.create(newUser).cache();
 
-        Mono<Set<String>> assignedToUsersMono = userMono
-                .flatMap(user -> {
+        Mono<Set<String>> assignedToUsersMono = userMono.flatMap(user -> {
                     String workspaceName = user.computeFirstName() + "'s apps";
                     return workspaceRepository.findByName(workspaceName);
                 })
@@ -136,7 +134,6 @@ public class UserServiceWithDisabledSignupTest {
                     assertThat(user.getPolicies()).isNotEmpty();
 
                     assertThat(workspaceAssignedToUsers).contains(user.getId());
-
                 })
                 .verifyComplete();
     }

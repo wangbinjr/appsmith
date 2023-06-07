@@ -1,15 +1,15 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.external.helpers;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.PropertyAccessorFactory;
 
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.PropertyAccessorFactory;
 
 public final class AppsmithBeanUtils {
 
@@ -30,7 +30,7 @@ public final class AppsmithBeanUtils {
         return emptyNames.toArray(result);
     }
 
-    //Use Spring BeanUtils to copy and ignore null
+    // Use Spring BeanUtils to copy and ignore null
     public static void copyNewFieldValuesIntoOldObject(Object src, Object target) {
         BeanUtils.copyProperties(src, target, getNullPropertyNames(src));
     }
@@ -98,7 +98,6 @@ public final class AppsmithBeanUtils {
         BeanWrapper trgWrap = PropertyAccessorFactory.forBeanPropertyAccess(trg);
 
         props.forEach(p -> trgWrap.setPropertyValue(p, srcWrap.getPropertyValue(p)));
-
     }
 
     public static List<Object> getBeanPropertyValues(Object object) {

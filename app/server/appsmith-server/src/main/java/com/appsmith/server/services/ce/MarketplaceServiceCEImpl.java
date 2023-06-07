@@ -1,3 +1,4 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.services.ce;
 
 import com.appsmith.external.models.ApiTemplate;
@@ -8,6 +9,13 @@ import com.appsmith.server.exceptions.AppsmithError;
 import com.appsmith.server.exceptions.AppsmithException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.LinkedMultiValueMap;
@@ -16,14 +24,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 public class MarketplaceServiceCEImpl implements MarketplaceServiceCE {
@@ -44,12 +44,12 @@ public class MarketplaceServiceCEImpl implements MarketplaceServiceCE {
     private final Long timeoutInMillis = Long.valueOf(10000);
 
     @Autowired
-    public MarketplaceServiceCEImpl(WebClient.Builder webClientBuilder,
-                                    CloudServicesConfig cloudServicesConfig, ObjectMapper objectMapper) {
+    public MarketplaceServiceCEImpl(
+            WebClient.Builder webClientBuilder, CloudServicesConfig cloudServicesConfig, ObjectMapper objectMapper) {
         this.cloudServicesConfig = cloudServicesConfig;
         this.webClient = webClientBuilder
-                .defaultHeaders(header -> header.setBasicAuth(cloudServicesConfig.getUsername(),
-                        cloudServicesConfig.getPassword()))
+                .defaultHeaders(header ->
+                        header.setBasicAuth(cloudServicesConfig.getUsername(), cloudServicesConfig.getPassword()))
                 .baseUrl(cloudServicesConfig.getBaseUrl())
                 .build();
         this.objectMapper = objectMapper;
@@ -143,11 +143,7 @@ public class MarketplaceServiceCEImpl implements MarketplaceServiceCE {
             return Mono.error(new AppsmithException(AppsmithError.MARKETPLACE_NOT_CONFIGURED));
         }
 
-        return webClient
-                .put()
-                .uri(uri)
-                .retrieve()
-                .bodyToMono(Boolean.class);
+        return webClient.put().uri(uri).retrieve().bodyToMono(Boolean.class);
     }
 
     @Override

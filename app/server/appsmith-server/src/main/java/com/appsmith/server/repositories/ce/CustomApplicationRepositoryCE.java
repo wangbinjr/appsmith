@@ -1,3 +1,4 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.repositories.ce;
 
 import com.appsmith.server.acl.AclPermission;
@@ -6,13 +7,12 @@ import com.appsmith.server.domains.ApplicationPage;
 import com.appsmith.server.domains.GitAuth;
 import com.appsmith.server.repositories.AppsmithRepository;
 import com.mongodb.client.result.UpdateResult;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface CustomApplicationRepositoryCE extends AppsmithRepository<Application> {
 
@@ -35,7 +35,8 @@ public interface CustomApplicationRepositoryCE extends AppsmithRepository<Applic
 
     Flux<Application> findByClonedFromApplicationId(String applicationId, AclPermission permission);
 
-    Mono<UpdateResult> addPageToApplication(String applicationId, String pageId, boolean isDefault, String defaultPageId);
+    Mono<UpdateResult> addPageToApplication(
+            String applicationId, String pageId, boolean isDefault, String defaultPageId);
 
     Mono<UpdateResult> setPages(String applicationId, List<ApplicationPage> pages);
 
@@ -43,20 +44,24 @@ public interface CustomApplicationRepositoryCE extends AppsmithRepository<Applic
 
     Mono<UpdateResult> setGitAuth(String applicationId, GitAuth gitAuth, AclPermission aclPermission);
 
-    Mono<Application> getApplicationByGitBranchAndDefaultApplicationId(String defaultApplicationId, String branchName, Optional<AclPermission> permission);
+    Mono<Application> getApplicationByGitBranchAndDefaultApplicationId(
+            String defaultApplicationId, String branchName, Optional<AclPermission> permission);
 
-    Mono<Application> getApplicationByGitBranchAndDefaultApplicationId(String defaultApplicationId, String branchName, AclPermission aclPermission);
+    Mono<Application> getApplicationByGitBranchAndDefaultApplicationId(
+            String defaultApplicationId, String branchName, AclPermission aclPermission);
 
-    Mono<Application> getApplicationByGitBranchAndDefaultApplicationId(String defaultApplicationId,
-                                                                       List<String> projectionFieldNames,
-                                                                       String branchName,
-                                                                       AclPermission aclPermission);
+    Mono<Application> getApplicationByGitBranchAndDefaultApplicationId(
+            String defaultApplicationId,
+            List<String> projectionFieldNames,
+            String branchName,
+            AclPermission aclPermission);
 
     Flux<Application> getApplicationByGitDefaultApplicationId(String defaultApplicationId, AclPermission permission);
 
     Mono<List<String>> getAllApplicationId(String workspaceId);
 
-    Mono<UpdateResult> setAppTheme(String applicationId, String editModeThemeId, String publishedModeThemeId, AclPermission aclPermission);
+    Mono<UpdateResult> setAppTheme(
+            String applicationId, String editModeThemeId, String publishedModeThemeId, AclPermission aclPermission);
 
     Mono<Long> countByWorkspaceId(String workspaceId);
 
@@ -66,8 +71,13 @@ public interface CustomApplicationRepositoryCE extends AppsmithRepository<Applic
 
     Mono<Application> getApplicationByDefaultApplicationIdAndDefaultBranch(String defaultApplicationId);
 
-    Mono<UpdateResult> updateFieldByDefaultIdAndBranchName(String defaultId, String defaultIdPath, Map<String,
-            Object> fieldNameValueMap, String branchName, String branchNamePath, AclPermission permission);
+    Mono<UpdateResult> updateFieldByDefaultIdAndBranchName(
+            String defaultId,
+            String defaultIdPath,
+            Map<String, Object> fieldNameValueMap,
+            String branchName,
+            String branchNamePath,
+            AclPermission permission);
 
     Mono<Application> findByNameAndWorkspaceId(String applicationName, String workspaceId, AclPermission permission);
 }

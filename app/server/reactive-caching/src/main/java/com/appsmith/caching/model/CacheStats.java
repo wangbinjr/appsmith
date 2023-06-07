@@ -1,7 +1,7 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.caching.model;
 
 import java.util.concurrent.atomic.AtomicInteger;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

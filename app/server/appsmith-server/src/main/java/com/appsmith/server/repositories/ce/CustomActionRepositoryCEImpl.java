@@ -1,4 +1,7 @@
+/* Copyright 2019-2023 Appsmith */
 package com.appsmith.server.repositories.ce;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 import com.appsmith.external.models.QActionConfiguration;
 import com.appsmith.server.acl.AclPermission;
@@ -6,6 +9,9 @@ import com.appsmith.server.domains.Action;
 import com.appsmith.server.domains.QAction;
 import com.appsmith.server.repositories.BaseAppsmithRepositoryImpl;
 import com.appsmith.server.repositories.CacheableRepositoryHelper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import org.springframework.data.mongodb.core.convert.MongoConverter;
@@ -13,15 +19,13 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+public class CustomActionRepositoryCEImpl extends BaseAppsmithRepositoryImpl<Action>
+        implements CustomActionRepositoryCE {
 
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-
-public class CustomActionRepositoryCEImpl extends BaseAppsmithRepositoryImpl<Action> implements CustomActionRepositoryCE {
-
-    public CustomActionRepositoryCEImpl(ReactiveMongoOperations mongoOperations, MongoConverter mongoConverter, CacheableRepositoryHelper cacheableRepositoryHelper) {
+    public CustomActionRepositoryCEImpl(
+            ReactiveMongoOperations mongoOperations,
+            MongoConverter mongoConverter,
+            CacheableRepositoryHelper cacheableRepositoryHelper) {
         super(mongoOperations, mongoConverter, cacheableRepositoryHelper);
     }
 
@@ -40,10 +44,8 @@ public class CustomActionRepositoryCEImpl extends BaseAppsmithRepositoryImpl<Act
     }
 
     @Override
-    public Flux<Action> findActionsByNameInAndPageIdAndActionConfiguration_HttpMethod(Set<String> names,
-                                                                                      String pageId,
-                                                                                      String httpMethod,
-                                                                                      AclPermission aclPermission) {
+    public Flux<Action> findActionsByNameInAndPageIdAndActionConfiguration_HttpMethod(
+            Set<String> names, String pageId, String httpMethod, AclPermission aclPermission) {
         Criteria namesCriteria = where(fieldName(QAction.action.name)).in(names);
         Criteria pageCriteria = where(fieldName(QAction.action.pageId)).is(pageId);
         String httpMethodQueryKey = fieldName(QAction.action.actionConfiguration)
@@ -56,14 +58,13 @@ public class CustomActionRepositoryCEImpl extends BaseAppsmithRepositoryImpl<Act
     }
 
     @Override
-    public Flux<Action> findAllActionsByNameAndPageIds(String name, List<String> pageIds, AclPermission aclPermission,
-                                                       Sort sort) {
+    public Flux<Action> findAllActionsByNameAndPageIds(
+            String name, List<String> pageIds, AclPermission aclPermission, Sort sort) {
         /**
          * TODO : This function is called by get(params) to get all actions by params and hence
          * only covers criteria of few fields like page id, name, etc. Make this generic to cover
          * all possible fields
          */
-
         List<Criteria> criteriaList = new ArrayList<>();
 
         if (name != null) {

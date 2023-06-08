@@ -82,54 +82,72 @@ spec:
             # The `livenessProbe` and `readinessProbe` will be disabled until the `startupProbe` is successful.
             httpGet:
               port: http
+              {{- if .Values.probes }}
               {{- if .Values.probes.startupProbe.api | quote }}
               path: {{ .Values.probes.startupProbe.api | quote }}
+              {{- end }}
               {{- else }}
               path: "/api/v1/health"
               {{- end }}
+            {{- if .Values.probes }}
             {{- if .Values.probes.startupProbe.failureThreshold }}
             failureThreshold: {{ .Values.probes.startupProbe.failureThreshold }}
+            {{- end }}
             {{- else }}
             failureThreshold: 3
             {{- end }}
+            {{- if .Values.probes }}
             {{- if .Values.probes.startupProbe.periodSeconds }}
             periodSeconds: {{ .Values.probes.startupProbe.periodSeconds }}
+            {{- end }}
             {{- else }}
             periodSeconds: 60
             {{- end }}
           livenessProbe:
             httpGet:
               port: http
+              {{- if .Values.probes }}
               {{- if .Values.probes.livenessProbe.api | quote }}
               path: {{ .Values.probes.livenessProbe.api | quote }}
+              {{- end }}
               {{- else }}
               path: "/api/v1/health"
               {{- end }}
+            {{- if .Values.probes }}
             {{- if .Values.probes.livenessProbe.failureThreshold }}
             failureThreshold: {{ .Values.probes.livenessProbe.failureThreshold }}
+            {{- end }}
             {{- else }}
             failureThreshold: 3
             {{- end }}
+            {{- if .Values.probes }}
             {{- if .Values.probes.livenessProbe.periodSeconds }}
             periodSeconds: {{ .Values.probes.livenessProbe.periodSeconds }}
+            {{- end }}
             {{- else }}
             periodSeconds: 10
             {{- end }}
           readinessProbe:
             httpGet:
               port: http
+              {{- if .Values.probes }}
               {{- if .Values.probes.readinessProbe.api | quote }}
               path: {{ .Values.probes.readinessProbe.api | quote }}
+              {{- end }}
               {{- else }}
               path: "/api/v1/health"
               {{- end }}
+            {{- if .Values.probes }}
             {{- if .Values.probes.readinessProbe.failureThreshold }}
             failureThreshold: {{ .Values.probes.readinessProbe.failureThreshold }}
+            {{- end }}
             {{- else }}
             failureThreshold: 3
             {{- end }}
+            {{- if .Values.probes }}
             {{- if .Values.probes.readinessProbe.periodSeconds }}
             periodSeconds: {{ .Values.probes.readinessProbe.periodSeconds }}
+            {{- end }}
             {{- else }}
             periodSeconds: 10
             {{- end }}

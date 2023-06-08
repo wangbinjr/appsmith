@@ -104,21 +104,6 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-# Making sure probes are configurable
-probes:
-  livenessProbe: {}
-    # api: "/api/v1/health"
-    # failureThreshold: 2
-    # periodSeconds: 60
-  readinessProbe: {}
-    # api: "/api/v1/health"
-    # failureThreshold: 2
-    # periodSeconds: 60
-  startupProbe: {}
-    # api: "/api/v1/health"
-    # failureThreshold: 3
-    # periodSeconds: 60
-
 service:
   ## @param service.type Kubernetes Service type
   ##
